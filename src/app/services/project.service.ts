@@ -1,5 +1,5 @@
 import {ObjectId} from 'mongodb';
-import {projectRepository} from '../database/repository/project.repository';
+import {projectRepository} from '../database';
 
 class ProjectService {
   repository = projectRepository;

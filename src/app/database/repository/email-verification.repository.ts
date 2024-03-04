@@ -69,5 +69,4 @@ class EmailVerficationRepository {
   }
 }
 
-const emailVerficationRepository = new EmailVerficationRepository();
-export default emailVerficationRepository;
+export const emailVerficationRepository = new EmailVerficationRepository();
