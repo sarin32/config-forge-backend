@@ -5,8 +5,10 @@ import {
   stringSchema,
   validateObject,
 } from '../../utils/schema-validator';
-import {userService} from '../../services';
+import {userService} from '../../services/user.service';
 import {BadRequestError} from '../../errors';
+import { registrationService } from '../../services/registration.service';
+import { loginService } from '../../services/login.service';
 
 const signUpSchema = objectSchema({
   object: {
@@ -35,7 +37,7 @@ export async function signUp(ctx: Context) {
   if (error) throw new BadRequestError(error.message);
 
   const {name, email, password} = value;
-  ctx.body = await userService.signup({name, email, password});
+  ctx.body = await registrationService.signup({name, email, password});
 }
 
 export async function signIn(ctx: Context) {
@@ -44,12 +46,12 @@ export async function signIn(ctx: Context) {
   if (error) throw new BadRequestError(error.message);
 
   const {email, password} = value;
-  ctx.body = await userService.signIn({email, password});
+  ctx.body = await loginService.signIn({email, password});
 }
 
 export async function sendEmailForVerification(ctx: Context) {
   const {userId} = ctx.state.user;
-  ctx.body = await userService.sendEmailForVerification({userId});
+  ctx.body = await registrationService.sendEmailForVerification({userId});
 }
 
 export async function verifyEmailVerificationOTP(ctx: Context) {
@@ -63,7 +65,7 @@ export async function verifyEmailVerificationOTP(ctx: Context) {
   const {userId} = ctx.state.user;
   const {otp} = value;
 
-  ctx.body = await userService.verifyEmailVerificationOTP({userId, otp});
+  ctx.body = await registrationService.verifyEmailVerificationOTP({userId, otp});
 }
 
 export async function getSelfInfo(ctx: Context) {
