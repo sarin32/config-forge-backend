@@ -7,8 +7,8 @@ import {
 } from '../../utils/schema-validator';
 import {userService} from '../../services/user.service';
 import {BadRequestError} from '../../errors';
-import { registrationService } from '../../services/registration.service';
-import { loginService } from '../../services/login.service';
+import {registrationService} from '../../services/registration.service';
+import {loginService} from '../../services/login.service';
 
 const signUpSchema = objectSchema({
   object: {
@@ -65,7 +65,10 @@ export async function verifyEmailVerificationOTP(ctx: Context) {
   const {userId} = ctx.state.user;
   const {otp} = value;
 
-  ctx.body = await registrationService.verifyEmailVerificationOTP({userId, otp});
+  ctx.body = await registrationService.verifyEmailVerificationOTP({
+    userId,
+    otp,
+  });
 }
 
 export async function getSelfInfo(ctx: Context) {

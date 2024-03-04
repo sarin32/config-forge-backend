@@ -1,7 +1,6 @@
 import {ObjectId} from 'mongodb';
 import {userRepository} from '../database';
 
-
 type getUserInfoParams = {
   userId: string;
 };

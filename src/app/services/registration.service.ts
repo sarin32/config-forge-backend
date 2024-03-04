@@ -7,10 +7,7 @@ import {
 import {emailVerficationRepository, userRepository} from '../database';
 import {AuthorizationError, ConflictError, ForbiddenError} from '../errors';
 import emailUtil from '../utils/email-util';
-import {
-  generatePassword,
-  generateSalt,
-} from '../utils/password-util';
+import {generatePassword, generateSalt} from '../utils/password-util';
 import {generateRandomString} from '../utils/string-util';
 import {generateTemplate} from '../utils/template-util';
 import {generateSignature} from '../utils/token-util';

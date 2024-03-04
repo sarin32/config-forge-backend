@@ -1,17 +1,13 @@
 import {LOGIN_TOKEN_LIFETIME} from '../config/config';
 import {userRepository} from '../database';
 import {AuthorizationError} from '../errors';
-import {
-  validatePassword,
-} from '../utils/password-util';
+import {validatePassword} from '../utils/password-util';
 import {generateSignature} from '../utils/token-util';
-
 
 type SignInParams = {
   email: string;
   password: string;
 };
-
 
 class LoginService {
   private readonly repository = userRepository;
@@ -36,7 +32,6 @@ class LoginService {
       token: `Bearer ${token}`,
     };
   }
-
 }
 
 export const loginService = new LoginService();
