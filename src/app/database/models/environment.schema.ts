@@ -4,4 +4,5 @@ export interface EnvironmentSchema extends Document {
   name: string;
   project_id: ObjectId;
   created_at: Date;
+  created_by: ObjectId;
 }
