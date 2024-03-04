@@ -7,6 +7,14 @@ import {TokenSchema} from './token.schema';
 import {UserSchema} from './user.schema';
 import {VariableSchema} from './variable.schema';
 
+export * from './access.schema';
+export * from './email-verification.schema';
+export * from './environment.schema';
+export * from './project.schema';
+export * from './token.schema';
+export * from './user.schema';
+export * from './variable.schema';
+
 export const userModal = connection.getCollection<UserSchema>('users');
 
 export const emailVerificationModal =
