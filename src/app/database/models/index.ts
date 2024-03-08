@@ -1,3 +1,12 @@
+import {
+  COLLECTION_ACCESS,
+  COLLECTION_EMAIL_VERIFICATIONS,
+  COLLECTION_ENVIRONMENTS,
+  COLLECTION_PROJECTS,
+  COLLECTION_TOKENS,
+  COLLECTION_USERS,
+  COLLECTION_VARIABLES,
+} from '../../config';
 import connection from '../connection';
 import {AccessSchema} from './access.schema';
 import {EmailVerificationSchema} from './email-verification.schema';
@@ -15,19 +24,25 @@ export * from './token.schema';
 export * from './user.schema';
 export * from './variable.schema';
 
-export const userModal = connection.getCollection<UserSchema>('users');
+export const userModal = connection.getCollection<UserSchema>(COLLECTION_USERS);
 
 export const emailVerificationModal =
-  connection.getCollection<EmailVerificationSchema>('email_verifications');
+  connection.getCollection<EmailVerificationSchema>(
+    COLLECTION_EMAIL_VERIFICATIONS
+  );
 
-export const accessModal = connection.getCollection<AccessSchema>('access');
+export const accessModal =
+  connection.getCollection<AccessSchema>(COLLECTION_ACCESS);
 
-export const projectModal = connection.getCollection<ProjectSchema>('projects');
+export const projectModal =
+  connection.getCollection<ProjectSchema>(COLLECTION_PROJECTS);
 
-export const environmentModal =
-  connection.getCollection<EnvironmentSchema>('environments');
+export const environmentModal = connection.getCollection<EnvironmentSchema>(
+  COLLECTION_ENVIRONMENTS
+);
 
-export const tokenModal = connection.getCollection<TokenSchema>('tokens');
+export const tokenModal =
+  connection.getCollection<TokenSchema>(COLLECTION_TOKENS);
 
 export const variableModal =
-  connection.getCollection<VariableSchema>('variables');
+  connection.getCollection<VariableSchema>(COLLECTION_VARIABLES);
