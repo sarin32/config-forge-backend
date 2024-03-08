@@ -2,7 +2,7 @@ import {ObjectId} from 'mongodb';
 import {environmentRepository} from '../database';
 
 class EnvironmentService {
-  repository = environmentRepository;
+  private repository = environmentRepository;
 
   async createEnvironment({
     name,

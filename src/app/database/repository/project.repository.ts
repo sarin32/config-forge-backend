@@ -2,7 +2,7 @@ import {ObjectId} from 'mongodb';
 import {projectModal} from '../models';
 
 class ProjectRepository {
-  modal = projectModal;
+  private modal = projectModal;
 
   async createProject({name, userId}: {name: string; userId: ObjectId}) {
     const response = await this.modal.insertOne({

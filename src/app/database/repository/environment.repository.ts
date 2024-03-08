@@ -2,7 +2,7 @@ import {ObjectId} from 'mongodb';
 import {environmentModal} from '../models';
 
 class EnvironmentRepository {
-  modal = environmentModal;
+  private modal = environmentModal;
 
   async createEnvironment({
     name,

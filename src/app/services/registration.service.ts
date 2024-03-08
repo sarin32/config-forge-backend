@@ -2,7 +2,7 @@ import {ObjectId} from 'mongodb';
 import {LOGIN_TOKEN_LIFETIME} from '../config/config';
 import {
   VERIFICATION_MAX_RESEND_INTERVAL,
-  VERIFICATION__MAX_TRIES,
+  VERIFICATION_MAX_TRIES,
 } from '../config/constants';
 import {emailVerficationRepository, userRepository} from '../database';
 import {AuthorizationError, ConflictError, ForbiddenError} from '../errors';
@@ -70,7 +70,7 @@ class RegistrationService {
         );
       }
 
-      if (existingVerification.verification_try >= VERIFICATION__MAX_TRIES) {
+      if (existingVerification.verification_try >= VERIFICATION_MAX_TRIES) {
         throw new ForbiddenError(
           'Email verification tries have been exhausted'
         );

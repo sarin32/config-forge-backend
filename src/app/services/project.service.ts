@@ -2,7 +2,7 @@ import {ObjectId} from 'mongodb';
 import {projectRepository} from '../database';
 
 class ProjectService {
-  repository = projectRepository;
+  private readonly repository = projectRepository;
 
   async createProject({
     name,

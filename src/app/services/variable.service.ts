@@ -2,7 +2,7 @@ import {ObjectId} from 'mongodb';
 import {variableRepository} from '../database';
 
 class VariableService {
-  private repository = variableRepository;
+  private readonly repository = variableRepository;
 
   async createVariable({
     environmentId,
