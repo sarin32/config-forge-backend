@@ -1,11 +1,25 @@
 import {Document, MongoClient} from 'mongodb';
 import {DATABASE_SETTINGS} from '../config/config';
+import {DATABASE_CONFIG_FORGE, NAMESPACE_KEYVAULT} from '../config';
+import autoEncrptionSchema from './auto-encryption-schema';
 
 class Connection {
-  private client: MongoClient;
+  private readonly client: MongoClient;
 
   constructor() {
-    this.client = new MongoClient(DATABASE_SETTINGS.URL, {});
+    const kmsProviders = {
+      local: {
+        key: DATABASE_SETTINGS.MASTER_KEY,
+      },
+    };
+
+    this.client = new MongoClient(DATABASE_SETTINGS.URL, {
+      autoEncryption: {
+        keyVaultNamespace: NAMESPACE_KEYVAULT,
+        kmsProviders,
+        schemaMap: autoEncrptionSchema,
+      },
+    });
   }
 
   public async startConnecion() {
@@ -14,7 +28,7 @@ class Connection {
 
   public getCollection<DocumentT extends Document>(collectionName: string) {
     return this.client
-      .db(DATABASE_SETTINGS.DATABASE_NAME)
+      .db(DATABASE_CONFIG_FORGE)
       .collection<DocumentT>(collectionName);
   }
 }

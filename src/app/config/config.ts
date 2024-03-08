@@ -1,5 +1,10 @@
 // environment level constants
 
+import {Binary} from 'mongodb';
+import * as dotEnv from 'dotenv';
+
+dotEnv.config();
+
 const env = process.env;
 
 export const PORT = Number(env.PORT!);
@@ -8,9 +13,10 @@ export const NODE_ENV = env.NODE_ENV;
 
 export const DATABASE_SETTINGS = {
   URL: env.DATABASE_URL!,
-  DATABASE_NAME: env.DATABASE_NAME!,
-  MASTER_KEY: env.DATABASE_MASTER_KEY!,
-  KEY_BASE64: env.DATABASE_KEY_BASE64!,
+  MASTER_KEY: Buffer.from(env.DATABASE_MASTER_KEY!, 'hex')!,
+  KEY_BASE64: [
+    new Binary(Buffer.from(env.DATABASE_ENCRYPTION_KEY_BASE64!, 'base64'), 4),
+  ],
 };
 
 export const SECRET_TOKEN = env.JWT_SECRET_TOKEN!;

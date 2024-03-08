@@ -4,8 +4,8 @@
     "fix": "eslint --fix .",
     "build:dev": "tsc",
     "build:prod": "tsc",
-    "start:dev": "infisical run --env=dev --path=/ -- nodemon src/index.ts",
-    "start:prod": "infisical run -- node src/index.js"
+    "start:dev": "nodemon src/index.ts",
+    "start:prod": "node src/index.js"
   },
   "engines": {
     "node": ">=20"
@@ -15,12 +15,14 @@
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
     "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
     "handlebars": "^4.7.8",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "koa": "^2.15.0",
     "lodash": "^4.17.21",
     "mongodb": "^6.3.0",
+    "mongodb-client-encryption": "^6.0.0",
     "nodemailer": "^6.9.8",
     "source-map-support": "^0.5.21"
   },
