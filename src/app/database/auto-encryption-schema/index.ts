@@ -1,8 +1,8 @@
-import {NAMESPACE_ENVIRONMENTS} from '../../config';
-import environmentAutoSchema from './environment.auto-schema';
+import {NAMESPACE_VARIABLES} from '../../config';
+import variablesAutoSchema from './variables.auto-schema';
 
 const autoEncrptionSchema: Record<string, unknown> = {};
 
-autoEncrptionSchema[NAMESPACE_ENVIRONMENTS] = environmentAutoSchema;
+autoEncrptionSchema[NAMESPACE_VARIABLES] = variablesAutoSchema;
 
 export default autoEncrptionSchema;
