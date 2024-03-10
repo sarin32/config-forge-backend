@@ -15,7 +15,7 @@ export async function tokenMiddleware(ctx: Context, next: Next) {
   if (response.tokenExpired) {
     throw new AuthorizationError('Authorization token expired');
   }
-  
+
   if (response.invalidToken || !response.payload) {
     throw new AuthorizationError('Invalid Authorization token');
   }
