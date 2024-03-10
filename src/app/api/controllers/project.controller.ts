@@ -14,7 +14,10 @@ const createProjectSchema = objectSchema({
 });
 
 export async function createProject(ctx: Context) {
-  const {error, value} = validateObject(createProjectSchema, ctx.request.body);
+  const {error, value} = validateObject<{name: string}>(
+    createProjectSchema,
+    ctx.request.body
+  );
 
   if (error) throw new BadRequestError(error.message);
 

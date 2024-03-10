@@ -16,10 +16,10 @@ const createEnvironmentSchema = objectSchema({
 });
 
 export async function createEnvironment(ctx: Context) {
-  const {error, value} = validateObject(
-    createEnvironmentSchema,
-    ctx.request.body
-  );
+  const {error, value} = validateObject<{
+    name: string;
+    projectId: string;
+  }>(createEnvironmentSchema, ctx.request.body);
 
   if (error) throw new BadRequestError(error.message);
 
