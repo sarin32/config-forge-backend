@@ -8,7 +8,7 @@ export const COLLECTION_EMAIL_VERIFICATIONS = 'emailVerifications';
 export const COLLECTION_ENVIRONMENTS = 'environments';
 export const COLLECTION_PROJECTS = 'projects';
 export const COLLECTION_TOKENS = 'tokens';
-export const COLLECTION_VARIABLES = 'variabes';
+export const COLLECTION_VARIABLES = 'variables';
 export const COLLECTION_USERS = 'users';
 export const COLLECTION_KEYVAULT = '__keyVault';
 
