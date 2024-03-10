@@ -7,7 +7,7 @@ export class BaseError extends Error {
   constructor({
     statusCode,
     message,
-    isToBeReported = true,
+    isToBeReported,
     errorCode,
   }: {
     statusCode: HttpStatusCode;
