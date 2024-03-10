@@ -1,27 +1,28 @@
 import {ObjectId} from 'mongodb';
 import {VariableSchema, variableModal} from '../models';
 
+export interface CreateVariable {
+  overrideUserId?: ObjectId;
+  environmentId: ObjectId;
+  key: string;
+  value: string;
+}
 class VariableRepository {
   private modal = variableModal;
 
-  async createProject({
-    userId,
+  async createVariable({
+    overrideUserId,
     environmentId,
     key,
     value,
-  }: {
-    userId?: ObjectId;
-    environmentId: ObjectId;
-    key: string;
-    value: string;
-  }) {
+  }: CreateVariable) {
     const inserObj: VariableSchema = {
       created_at: new Date(),
       environment_id: environmentId,
       key,
       value,
     };
-    if (userId) inserObj.user_id = userId;
+    if (overrideUserId) inserObj.override_user_id = overrideUserId;
 
     const response = await this.modal.insertOne(inserObj);
     if (!response.acknowledged) {

@@ -1,5 +1,5 @@
 import {ObjectId} from 'mongodb';
-import {variableRepository} from '../database';
+import {CreateVariable, variableRepository} from '../database';
 
 class VariableService {
   private readonly repository = variableRepository;
@@ -9,18 +9,23 @@ class VariableService {
     key,
     value,
     userId,
+    isOverride = false,
   }: {
     environmentId: string | ObjectId;
     key: string;
     value: string;
     userId?: ObjectId;
+    isOverride: boolean;
   }) {
-    this.repository.createProject({
+    const variableObject: CreateVariable = {
       environmentId: new ObjectId(environmentId),
       key,
       value,
-      userId,
-    });
+    };
+
+    if (isOverride) variableObject.overrideUserId = userId;
+
+    await this.repository.createVariable(variableObject);
   }
 }
 

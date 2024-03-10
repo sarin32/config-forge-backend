@@ -1,5 +1,6 @@
 import {Context} from 'koa';
 import {
+  booleanSchema,
   objectIdSchema,
   objectSchema,
   stringSchema,
@@ -13,21 +14,28 @@ const createVariableSchema = objectSchema({
     environmentId: objectIdSchema(),
     key: stringSchema({min: 1}),
     value: stringSchema({required: false}),
+    isOverride: booleanSchema(),
   },
 });
 
 export async function createVariable(ctx: Context) {
-  const {error, value} = validateObject(createVariableSchema, ctx.request.body);
+  const {error, value} = validateObject<{
+    environmentId: string;
+    key: string;
+    value: string;
+    isOverride: boolean;
+  }>(createVariableSchema, ctx.request.body);
 
   if (error) throw new BadRequestError(error.message);
 
   const {userId} = ctx.state.user;
-  const {environmentId, key, value: variableValue} = value;
+  const {environmentId, key, value: variableValue, isOverride} = value;
 
   ctx.body = await variableService.createVariable({
     userId,
     environmentId,
     key,
     value: variableValue,
+    isOverride,
   });
 }
