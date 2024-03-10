@@ -12,11 +12,12 @@ export async function tokenMiddleware(ctx: Context, next: Next) {
 
   const response = await validateSignature(token);
 
-  if (response.invalidToken || !response.payload) {
-    throw new AuthorizationError('Invalid Authorization token');
-  }
   if (response.tokenExpired) {
     throw new AuthorizationError('Authorization token expired');
+  }
+  
+  if (response.invalidToken || !response.payload) {
+    throw new AuthorizationError('Invalid Authorization token');
   }
 
   ctx.state.user = response.payload;
