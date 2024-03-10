@@ -14,7 +14,7 @@ const createVariableSchema = objectSchema({
     environmentId: objectIdSchema(),
     key: stringSchema({min: 1}),
     value: stringSchema({required: false}),
-    isOverride: booleanSchema(),
+    isOverride: booleanSchema(false),
   },
 });
 
@@ -23,7 +23,7 @@ export async function createVariable(ctx: Context) {
     environmentId: string;
     key: string;
     value: string;
-    isOverride: boolean;
+    isOverride?: boolean;
   }>(createVariableSchema, ctx.request.body);
 
   if (error) throw new BadRequestError(error.message);
@@ -36,6 +36,6 @@ export async function createVariable(ctx: Context) {
     environmentId,
     key,
     value: variableValue,
-    isOverride,
+    isOverride: isOverride || false,
   });
 }
