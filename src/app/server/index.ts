@@ -4,6 +4,7 @@ import * as cors from '@koa/cors';
 import {PORT} from '../config/config';
 import {errorMiddleware, router} from '../api';
 import {connection} from '../database';
+import * as logger from 'koa-logger'
 
 export class Server {
   app: Koa<Koa.DefaultState, Koa.DefaultContext>;
@@ -11,6 +12,8 @@ export class Server {
   constructor() {
     this.app = new Koa();
 
+    this.app.use(logger());
+    
     // cors middleware
     this.app.use(
       cors({
