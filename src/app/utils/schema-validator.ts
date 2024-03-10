@@ -40,7 +40,7 @@ export function numberSchema() {
   return Joi.number();
 }
 
-export function objectIdSchema(required = false) {
+export function objectIdSchema(required = true) {
   let schema = Joi.string().pattern(/^[0-9a-fA-F]{24}$/);
   if (required) schema = schema.required();
   return schema;
