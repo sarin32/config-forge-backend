@@ -1,14 +1,12 @@
 import {ObjectId} from 'mongodb';
-import {TokenSchema, tokenModal} from '../models';
+import {tokenModal} from '../models';
+import {TokenSchema} from '@i/database/modals/token.modal.interface';
+import {
+  CreateTokenParams,
+  TokenRepositoryInterface,
+} from '@i/database/repository/toke.repository.interface';
 
-export interface CreateToken {
-  expiresOn: Date;
-  name: string;
-  token: string;
-  userId?: ObjectId;
-  environmentId: ObjectId;
-}
-class TokenRepository {
+class TokenRepository implements TokenRepositoryInterface {
   private modal = tokenModal;
 
   async createToken({
@@ -17,7 +15,7 @@ class TokenRepository {
     token,
     userId,
     environmentId,
-  }: CreateToken) {
+  }: CreateTokenParams) {
     const insertObject: TokenSchema = {
       created_at: new Date(),
       expires_on: expiresOn,
@@ -44,7 +42,7 @@ class TokenRepository {
       {$set: {is_active: false}}
     );
 
-    if (!response.acknowledged || response.modifiedCount != 1) {
+    if (!response.acknowledged || response.modifiedCount !== 1) {
       throw new Error('Could not update token details');
     }
   }

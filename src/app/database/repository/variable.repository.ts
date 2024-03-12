@@ -1,5 +1,6 @@
 import {ObjectId} from 'mongodb';
-import {VariableSchema, variableModal} from '../models';
+import {variableModal} from '../models';
+import {VariableSchema} from '@i/database/modals/variable.modal.interface';
 
 export interface CreateVariable {
   overrideUserId?: ObjectId;

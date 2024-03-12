@@ -4,7 +4,7 @@ import {
   VERIFICATION_MAX_RESEND_INTERVAL,
   VERIFICATION_MAX_TRIES,
 } from '../config/constants';
-import {emailVerficationRepository, userRepository} from '../database';
+import {emailVerificationRepository, userRepository} from '../database';
 import {AuthorizationError, ConflictError, ForbiddenError} from '../errors';
 import emailUtil from '../utils/email-util';
 import {generatePassword, generateSalt} from '../utils/password-util';
@@ -20,7 +20,7 @@ type SignupParams = {
 
 class RegistrationService {
   private readonly repository = userRepository;
-  private readonly emailVerificationRepository = emailVerficationRepository;
+  private readonly emailVerificationRepository = emailVerificationRepository;
 
   async signup({email, name, password}: SignupParams) {
     const salt = await generateSalt();

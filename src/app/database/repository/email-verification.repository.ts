@@ -1,21 +1,23 @@
-import {Filter, ObjectId, UpdateFilter} from 'mongodb';
+import {Filter, UpdateFilter} from 'mongodb';
 import {emailVerificationModal} from '../models';
-import {EmailVerificationSchema} from '../models/email-verification.schema';
+import {EmailVerificationSchema} from '@i/database/modals/email-verification.modal.interface';
+import {
+  CreateEmailVerificationParams,
+  EmailVerificationRepositoryInterface,
+  GetEmailVerificationParams,
+  UpdateVerificationByIdParams,
+} from '@i/database/repository/email-verification.repository.interface';
 
-type CreateEmailVerfictionParams = {
-  userId: ObjectId;
-  otp: string;
-  email: string;
-};
-
-class EmailVerficationRepository {
+class EmailVerificationRepository
+  implements EmailVerificationRepositoryInterface
+{
   private readonly modal = emailVerificationModal;
 
   async createEmailVerification({
     email,
     otp,
     userId: user_id,
-  }: CreateEmailVerfictionParams) {
+  }: CreateEmailVerificationParams) {
     const result = await this.modal.insertOne({
       user_id,
       email,
@@ -32,7 +34,7 @@ class EmailVerficationRepository {
     };
   }
 
-  async getEmailVerification({userId}: {userId: ObjectId}) {
+  async getEmailVerification({userId}: GetEmailVerificationParams) {
     const query: Filter<EmailVerificationSchema> = {user_id: userId};
 
     return await this.modal.findOne(query);
@@ -42,11 +44,7 @@ class EmailVerficationRepository {
     id,
     incrementVerificationTry,
     otp,
-  }: {
-    id: ObjectId;
-    incrementVerificationTry: boolean;
-    otp?: string;
-  }) {
+  }: UpdateVerificationByIdParams) {
     const query: Filter<EmailVerificationSchema> = {_id: id};
 
     const update: UpdateFilter<EmailVerificationSchema> = {};
@@ -69,4 +67,4 @@ class EmailVerficationRepository {
   }
 }
 
-export const emailVerficationRepository = new EmailVerficationRepository();
+export const emailVerificationRepository = new EmailVerificationRepository();

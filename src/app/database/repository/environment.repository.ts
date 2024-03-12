@@ -1,18 +1,13 @@
-import {ObjectId} from 'mongodb';
 import {environmentModal} from '../models';
+import {
+  CreateEnvironmentParams,
+  EnvironmentRepositoryInterface,
+} from '@i/database/repository/environment.repository.interface';
 
-class EnvironmentRepository {
+class EnvironmentRepository implements EnvironmentRepositoryInterface {
   private modal = environmentModal;
 
-  async createEnvironment({
-    name,
-    userId,
-    projectId,
-  }: {
-    name: string;
-    userId: ObjectId;
-    projectId: ObjectId;
-  }) {
+  async createEnvironment({name, userId, projectId}: CreateEnvironmentParams) {
     const response = await this.modal.insertOne({
       created_at: new Date(),
       name,

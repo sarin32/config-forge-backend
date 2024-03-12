@@ -15,7 +15,10 @@
     "noImplicitReturns": true,
     "pretty": true,
     "strict": true,
-    "target": "es2018"
+    "target": "es2018",
+    "paths": {
+      "@i/*": ["./src/app/interfaces/*"],
+    }
   },
   "include": [
     "src/**/*.ts",

@@ -45,9 +45,9 @@ export function numberSchema() {
 }
 
 export function booleanSchema(required = true) {
-  let schema=  Joi.boolean();
-  if(required) schema= schema.required()
-  return schema
+  let schema = Joi.boolean();
+  if (required) schema = schema.required();
+  return schema;
 }
 
 export function objectIdSchema(required = true) {
