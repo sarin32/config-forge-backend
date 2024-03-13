@@ -1,4 +1,4 @@
-import {environmentModal} from '../models';
+import {environmentModal} from '../modals';
 import {
   CreateEnvironmentParams,
   EnvironmentRepositoryInterface,

@@ -1,4 +1,4 @@
-import {projectModal} from '../models';
+import {projectModal} from '../modals';
 import {
   CreateProjectParams,
   ProjectRepositoryInterface,

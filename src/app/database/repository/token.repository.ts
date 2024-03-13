@@ -1,5 +1,5 @@
 import {ObjectId} from 'mongodb';
-import {tokenModal} from '../models';
+import {tokenModal} from '../modals';
 import {TokenSchema} from '@i/database/modals/token.modal.interface';
 import {
   CreateTokenParams,

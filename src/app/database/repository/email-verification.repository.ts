@@ -1,5 +1,5 @@
 import {Filter, UpdateFilter} from 'mongodb';
-import {emailVerificationModal} from '../models';
+import {emailVerificationModal} from '../modals';
 import {EmailVerificationSchema} from '@i/database/modals/email-verification.modal.interface';
 import {
   CreateEmailVerificationParams,

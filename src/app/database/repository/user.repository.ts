@@ -1,5 +1,5 @@
 import {ObjectId} from 'mongodb';
-import {userModal} from '../models';
+import {userModal} from '../modals';
 import {
   CreateUserParams,
   FindUserByEmailParams,
