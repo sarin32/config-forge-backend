@@ -23,5 +23,5 @@ export const NAMESPACE_VARIABLES = `${DATABASE_CONFIG_FORGE}.${COLLECTION_VARIAB
 export const DETERMINISTIC_ALGORITHM =
   'AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic';
 
-export const VERIFIED_USER_ROLE_ID = new ObjectId();
-export const NON_VERIFIED_USER_ROLE_ID = new ObjectId();
+export const VERIFIED_USER_ROLE_ID = '65f6e9949558dd63a1d70c0c';
+export const NON_VERIFIED_USER_ROLE_ID = '65f6e9949558dd63a1d70c0d';

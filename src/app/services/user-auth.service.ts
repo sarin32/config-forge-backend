@@ -2,6 +2,7 @@ import {NON_VERIFIED_USER_ROLE_ID} from '../config';
 import {LOGIN_TOKEN_LIFETIME} from '../config/config';
 import {userRepository} from '../database';
 import {AuthorizationError, ConflictError} from '../errors';
+import { objectId } from '../utils/data-type-util';
 import {
   generatePassword,
   generateSalt,
@@ -38,7 +39,7 @@ class UserAuthService {
       name,
       password,
       salt,
-      roleId: NON_VERIFIED_USER_ROLE_ID,
+      roleId: objectId(NON_VERIFIED_USER_ROLE_ID),
     });
 
     const payload = {

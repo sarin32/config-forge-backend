@@ -1,6 +1,7 @@
 import {userRepository} from '../database';
 import {VERIFIED_USER_ROLE_ID} from '../config';
 import {ObjectId} from '@i/common.interface';
+import { objectId } from '../utils/data-type-util';
 
 type getUserInfoParams = {
   userId: ObjectId;
@@ -20,7 +21,7 @@ class UserService {
   async markUserAsVerified({userId}: {userId: ObjectId}) {
     await this.repository.markUserAsVerified({
       userId,
-      roleId: VERIFIED_USER_ROLE_ID,
+      roleId: objectId(VERIFIED_USER_ROLE_ID),
     });
   }
 }

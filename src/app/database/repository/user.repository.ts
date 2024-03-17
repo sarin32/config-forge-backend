@@ -64,7 +64,7 @@ class UserRepository implements UserRepositoryInterface {
   async markUserAsVerified({userId, roleId}: MarkUserAsVerifiedParams) {
     const response = await this.modal.updateOne(
       {_id: userId},
-      {$set: {roleId}}
+      {$set: {roleId, isVerified: true}}
     );
 
     if (!response.acknowledged || response.modifiedCount !== 1) {
