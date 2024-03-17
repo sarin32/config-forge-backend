@@ -1,16 +1,17 @@
 import {ObjectId} from 'mongodb';
 import {projectRepository} from '../database';
+import {
+  AddProjectUserParams,
+  CreateProjectParams,
+  GetProjectParams,
+  GetProjectListResult,
+  ProjectServiceInterface,
+} from '@i/services/project.service.interface';
 
-class ProjectService {
+class ProjectService implements ProjectServiceInterface {
   private readonly repository = projectRepository;
 
-  async createProject({
-    name,
-    userId,
-  }: {
-    name: string;
-    userId: ObjectId | string;
-  }) {
+  async createProject({name, userId}: CreateProjectParams) {
     const {projectId} = await this.repository.createProject({
       name,
       userId: new ObjectId(userId),
@@ -18,18 +19,14 @@ class ProjectService {
     return {projectId};
   }
 
-  async addProjectUser({
-    name,
+  addProjectUser(params: AddProjectUserParams): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+
+  async getProjectList({
     userId,
-  }: {
-    name: string;
-    userId: ObjectId | string;
-  }) {
-    const {projectId} = await this.repository.createProject({
-      name,
-      userId: new ObjectId(userId),
-    });
-    return {projectId};
+  }: GetProjectParams): Promise<GetProjectListResult> {
+    return await this.repository.getProjectList({userId: new ObjectId(userId)});
   }
 }
 

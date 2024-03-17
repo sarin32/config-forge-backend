@@ -1,5 +1,5 @@
 import {ObjectId} from 'mongodb';
-import {variableModal} from '../models';
+import {variableModal} from '../modals';
 import {VariableSchema} from '@i/database/modals/variable.modal.interface';
 
 export interface CreateVariable {
@@ -18,12 +18,12 @@ class VariableRepository {
     value,
   }: CreateVariable) {
     const inserObj: VariableSchema = {
-      created_at: new Date(),
-      environment_id: environmentId,
+      createdAt: new Date(),
+      environmentId: environmentId,
       key,
       value,
     };
-    if (overrideUserId) inserObj.override_user_id = overrideUserId;
+    if (overrideUserId) inserObj.overrideUserId = overrideUserId;
 
     const response = await this.modal.insertOne(inserObj);
     if (!response.acknowledged) {

@@ -9,10 +9,10 @@ class EnvironmentRepository implements EnvironmentRepositoryInterface {
 
   async createEnvironment({name, userId, projectId}: CreateEnvironmentParams) {
     const response = await this.modal.insertOne({
-      created_at: new Date(),
+      createdAt: new Date(),
       name,
-      project_id: projectId,
-      created_by: userId,
+      projectId,
+      createdBy: userId,
     });
     if (!response.acknowledged) {
       throw new Error('Failed to insert environment data');

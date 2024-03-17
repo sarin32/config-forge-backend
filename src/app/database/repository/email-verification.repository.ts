@@ -16,14 +16,14 @@ class EmailVerificationRepository
   async createEmailVerification({
     email,
     otp,
-    userId: user_id,
+    userId,
   }: CreateEmailVerificationParams) {
     const result = await this.modal.insertOne({
-      user_id,
+      userId,
       email,
       otp,
-      last_send_time: new Date(),
-      verification_try: 1,
+      lastSendTime: new Date(),
+      verificationTry: 1,
     });
     if (!result.acknowledged) {
       throw new Error('Failed to create email verification');
@@ -35,7 +35,7 @@ class EmailVerificationRepository
   }
 
   async getEmailVerification({userId}: GetEmailVerificationParams) {
-    const query: Filter<EmailVerificationSchema> = {user_id: userId};
+    const query: Filter<EmailVerificationSchema> = {userId: userId};
 
     return await this.modal.findOne(query);
   }
@@ -50,14 +50,14 @@ class EmailVerificationRepository
     const update: UpdateFilter<EmailVerificationSchema> = {};
 
     if (incrementVerificationTry) {
-      update.$inc = {verification_try: 1};
+      update.$inc = {verificationTry: 1};
     }
 
     const set: Record<string, unknown> = {};
     if (otp) {
       set.otp = otp;
     }
-    set.last_send_time = new Date();
+    set.lastSendTime = new Date();
     update.$set = set;
     const result = await this.modal.updateOne(query, update);
     if (!result.acknowledged) throw new Error('Failed to update verification');

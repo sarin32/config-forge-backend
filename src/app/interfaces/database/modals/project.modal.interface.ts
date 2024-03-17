@@ -7,13 +7,14 @@ export enum ProjectAccessLevel {
 }
 
 export interface ProjectUser {
-  user_id: ObjectId;
-  access_level: ProjectAccessLevel;
+  userId: ObjectId;
+  accessLevel: ProjectAccessLevel;
 }
 
 export interface ProjectSchema extends Document {
   name: string;
-  created_at: Date;
-  created_by: ObjectId;
+  createdAt: Date;
+  createdBy: ObjectId;
   users: ProjectUser[];
+  environmentCount: number
 }

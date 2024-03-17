@@ -5,6 +5,6 @@ export interface UserSchema extends Document {
   email: string;
   password: string;
   salt: string;
-  created_at: Date;
-  is_verified: Boolean;
+  createdAt: Date;
+  isVerified: Boolean;
 }

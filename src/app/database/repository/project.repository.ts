@@ -1,6 +1,8 @@
 import {projectModal} from '../modals';
 import {
   CreateProjectParams,
+  GetProjectListParams,
+  GetProjectListResult,
   ProjectRepositoryInterface,
   ProjectUserParams,
   UpdateProjectAccessParams,
@@ -15,11 +17,13 @@ class ProjectRepository implements ProjectRepositoryInterface {
 
   async createProject({name, userId}: CreateProjectParams) {
     const response = await this.modal.insertOne({
-      created_at: new Date(),
+      createdAt: new Date(),
       name,
-      created_by: userId,
-      users: [{user_id: userId, access_level: ProjectAccessLevel.ADMIN}],
+      createdBy: userId,
+      users: [{userId: userId, accessLevel: ProjectAccessLevel.ADMIN}],
+      environmentCount: 0,
     });
+
     if (!response.acknowledged) {
       throw new Error('Failed to insert project data');
     }
@@ -28,8 +32,8 @@ class ProjectRepository implements ProjectRepositoryInterface {
 
   async addProjectUser({projectId, userId, accessLevel}: ProjectUserParams) {
     const projectUser: ProjectUser = {
-      access_level: accessLevel,
-      user_id: userId,
+      accessLevel: accessLevel,
+      userId: userId,
     };
 
     const response = await this.modal.updateOne(
@@ -48,13 +52,35 @@ class ProjectRepository implements ProjectRepositoryInterface {
     userId,
   }: UpdateProjectAccessParams) {
     const response = await this.modal.updateOne(
-      {_id: projectId, 'users.user_id': userId},
-      {$set: {'users.$.access_level': updatedAccess}}
+      {_id: projectId, 'users.userId': userId},
+      {$set: {'users.$.accessLevel': updatedAccess}}
     );
 
     if (!response.acknowledged || response.modifiedCount !== 1) {
       throw new Error('Failed to update project data');
     }
+  }
+
+  async getProjectList({
+    userId,
+  }: GetProjectListParams): Promise<GetProjectListResult> {
+    const list = await this.modal
+      .find(
+        {
+          users: {$elemMatch: {userId: userId}},
+        },
+        {projection: {createdAt: 1, environmentCount: 1, name:1}}
+      )
+      .toArray();
+
+    return list.map(elem => {
+      return {
+        projectId: elem._id,
+        createdAt: elem.createdAt,
+        environmentCount: elem.environmentCount,
+        name: elem.name
+      };
+    });
   }
 }
 

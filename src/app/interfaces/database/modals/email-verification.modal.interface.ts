@@ -1,9 +1,9 @@
 import {Document, ObjectId} from 'mongodb';
 
 export interface EmailVerificationSchema extends Document {
-  user_id: ObjectId;
+  userId: ObjectId;
   otp: string;
   email: string;
-  last_send_time: Date;
-  verification_try: number;
+  lastSendTime: Date;
+  verificationTry: number;
 }

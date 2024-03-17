@@ -16,8 +16,8 @@ class UserRepository implements UserRepositoryInterface {
       name,
       password,
       salt,
-      created_at: new Date(),
-      is_verified: false,
+      createdAt: new Date(),
+      isVerified: false,
     });
 
     if (!result.acknowledged) {
@@ -41,7 +41,7 @@ class UserRepository implements UserRepositoryInterface {
     const result = await this.modal.findOne(
       {
         email,
-        is_verified: true,
+        isVerified: true,
       },
       {projection: {_id: 1}}
     );
@@ -63,7 +63,7 @@ class UserRepository implements UserRepositoryInterface {
   async markUserAsVerified({userID}: {userID: ObjectId}) {
     return await this.modal.findOneAndUpdate(
       {_id: userID},
-      {$set: {is_verified: true}}
+      {$set: {isVerified: true}}
     );
   }
 }

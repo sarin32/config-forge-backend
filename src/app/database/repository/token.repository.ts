@@ -17,15 +17,15 @@ class TokenRepository implements TokenRepositoryInterface {
     environmentId,
   }: CreateTokenParams) {
     const insertObject: TokenSchema = {
-      created_at: new Date(),
-      expires_on: expiresOn,
-      is_active: true,
+      createdAt: new Date(),
+      expiresOn: expiresOn,
+      isActive: true,
       name,
       token,
       environmentId,
     };
     if (userId) {
-      insertObject.user_id = userId;
+      insertObject.userId = userId;
     }
     const response = await this.modal.insertOne(insertObject);
 
@@ -39,7 +39,7 @@ class TokenRepository implements TokenRepositoryInterface {
   async revokeToken(tokenId: ObjectId) {
     const response = await this.modal.updateOne(
       {_id: tokenId},
-      {$set: {is_active: false}}
+      {$set: {isActive: false}}
     );
 
     if (!response.acknowledged || response.modifiedCount !== 1) {
@@ -51,8 +51,8 @@ class TokenRepository implements TokenRepositoryInterface {
     const tokenData = await this.modal.findOne(
       {
         token,
-        is_active: true,
-        expires_on: {$gt: new Date()},
+        isActive: true,
+        expiresOn: {$gt: new Date()},
       },
       {projection: {_id: 1}}
     );

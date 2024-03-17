@@ -62,7 +62,7 @@ class RegistrationService {
 
     if (existingVerification) {
       const timeSinceLastSend =
-        Date.now() - existingVerification.last_send_time.getTime();
+        Date.now() - existingVerification.lastSendTime.getTime();
 
       if (timeSinceLastSend < VERIFICATION_MAX_RESEND_INTERVAL) {
         throw new ForbiddenError(
@@ -70,7 +70,7 @@ class RegistrationService {
         );
       }
 
-      if (existingVerification.verification_try >= VERIFICATION_MAX_TRIES) {
+      if (existingVerification.verificationTry >= VERIFICATION_MAX_TRIES) {
         throw new ForbiddenError(
           'Email verification tries have been exhausted'
         );

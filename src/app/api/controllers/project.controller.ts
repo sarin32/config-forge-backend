@@ -26,3 +26,9 @@ export async function createProject(ctx: Context) {
 
   ctx.body = await projecService.createProject({userId, name});
 }
+
+export async function getProjectlist(ctx: Context) {
+  const {userId} = ctx.state.user;
+
+  ctx.body = await projecService.getProjectList({userId});
+}
