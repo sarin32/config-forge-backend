@@ -1,4 +1,3 @@
-import {ObjectId} from 'mongodb';
 import {projectRepository} from '../database';
 import {
   AddProjectUserParams,
@@ -14,19 +13,19 @@ class ProjectService implements ProjectServiceInterface {
   async createProject({name, userId}: CreateProjectParams) {
     const {projectId} = await this.repository.createProject({
       name,
-      userId: new ObjectId(userId),
+      userId,
     });
     return {projectId};
   }
 
-  addProjectUser(params: AddProjectUserParams): Promise<void> {
+  addProjectUser({}: AddProjectUserParams): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
   async getProjectList({
     userId,
   }: GetProjectParams): Promise<GetProjectListResult> {
-    return await this.repository.getProjectList({userId: new ObjectId(userId)});
+    return await this.repository.getProjectList({userId});
   }
 }
 

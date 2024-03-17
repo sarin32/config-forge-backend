@@ -31,8 +31,5 @@ export interface UserRepositoryInterface {
 
   findUserById(params: FindUserByIdParams): Promise<UserSchema | null>;
 
-  markUserAsVerified(
-    params: MarkUserAsVerifiedParams
-  ):Promise<void>;
-
+  markUserAsVerified(params: MarkUserAsVerifiedParams): Promise<void>;
 }

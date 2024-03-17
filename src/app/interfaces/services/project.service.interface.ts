@@ -1,45 +1,38 @@
-import { ObjectId } from "mongodb";
-
-
+import {ObjectId} from '@i/common.interface';
 
 export interface CreateProjectParams {
   name: string;
-  userId: ObjectId | string;
+  userId: ObjectId;
 }
 
 export interface CreateProjectResult {
-  projectId: ObjectId
+  projectId: ObjectId;
 }
 
 export interface AddProjectUserParams {
   name: string;
-  userId: ObjectId | string;
+  userId: ObjectId;
 }
 
 export interface GetProjectParams {
-  userId: ObjectId | string
+  userId: ObjectId;
 }
 
 export interface ProjectInfo {
-  projectId: ObjectId,
-  createdAt: Date,
-  environmentCount: number,
-  name: string
+  projectId: ObjectId;
+  createdAt: Date;
+  environmentCount: number;
+  name: string;
 }
 
-export type GetProjectListResult = ProjectInfo[]
+export type GetProjectListResult = ProjectInfo[];
 
-
-
-export type AddProjectUserResult = void
+export type AddProjectUserResult = void;
 
 export interface ProjectServiceInterface {
+  createProject(params: CreateProjectParams): Promise<CreateProjectResult>;
 
-  createProject(params: CreateProjectParams): Promise<CreateProjectResult>
+  getProjectList(params: GetProjectParams): Promise<GetProjectListResult>;
 
-  getProjectList(params: GetProjectParams): Promise<GetProjectListResult>
-
-  addProjectUser(params: AddProjectUserParams): Promise<AddProjectUserResult>
-
-
+  addProjectUser(params: AddProjectUserParams): Promise<AddProjectUserResult>;
 }

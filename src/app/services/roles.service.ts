@@ -1,8 +1,5 @@
-import {RolePermissions} from '@i/database/modals/roles.modal.interface';
 import {
   GetRoleInfoParams,
-  GetModulePermissionInfoParams,
-  GetModulePermissionInfoResult,
   GetRoleInfoResult,
 } from '@i/database/repository/role.repository.interface';
 import {

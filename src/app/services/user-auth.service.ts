@@ -66,7 +66,7 @@ class UserAuthService {
 
     const payload = {
       userId: user._id,
-      roleId: user.roleId
+      roleId: user.roleId,
     };
     const token = await generateSignature(payload, LOGIN_TOKEN_LIFETIME);
     return {

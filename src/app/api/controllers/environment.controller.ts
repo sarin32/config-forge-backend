@@ -7,6 +7,7 @@ import {
 } from '../../utils/schema-validator';
 import {BadRequestError} from '../../errors';
 import {environmentService} from '../../services/environment.service';
+import {objectId} from '../../utils/data-type-util';
 
 const createEnvironmentSchema = objectSchema({
   object: {
@@ -28,7 +29,7 @@ export async function createEnvironment(ctx: Context) {
 
   ctx.body = await environmentService.createEnvironment({
     userId,
-    projectId,
+    projectId: objectId(projectId),
     name,
   });
 }

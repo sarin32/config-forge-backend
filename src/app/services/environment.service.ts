@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId} from '@i/common.interface';
 import {environmentRepository} from '../database';
 
 class EnvironmentService {
@@ -10,13 +10,13 @@ class EnvironmentService {
     userId,
   }: {
     name: string;
-    userId: ObjectId | string;
-    projectId: ObjectId | string;
+    userId: ObjectId;
+    projectId: ObjectId;
   }) {
     const {environmentId} = await this.repository.createEnvironment({
       name,
-      projectId: new ObjectId(projectId),
-      userId: new ObjectId(userId),
+      projectId,
+      userId,
     });
 
     return {environmentId};

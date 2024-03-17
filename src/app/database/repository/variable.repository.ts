@@ -1,14 +1,12 @@
-import {ObjectId} from 'mongodb';
+import {
+  CreateVariableParams,
+  CreateVariableResult,
+  VariableRepositoryInterface,
+} from '@i/database/repository/variablerepository.interface';
 import {variableModal} from '../modals';
 import {VariableSchema} from '@i/database/modals/variable.modal.interface';
 
-export interface CreateVariable {
-  overrideUserId?: ObjectId;
-  environmentId: ObjectId;
-  key: string;
-  value: string;
-}
-class VariableRepository {
+class VariableRepository implements VariableRepositoryInterface {
   private modal = variableModal;
 
   async createVariable({
@@ -16,7 +14,7 @@ class VariableRepository {
     environmentId,
     key,
     value,
-  }: CreateVariable) {
+  }: CreateVariableParams): Promise<CreateVariableResult> {
     const inserObj: VariableSchema = {
       createdAt: new Date(),
       environmentId: environmentId,
@@ -30,7 +28,7 @@ class VariableRepository {
       throw new Error('Failed to insert variable data');
     }
 
-    return {projectId: response.insertedId};
+    return {variableId: response.insertedId};
   }
 }
 

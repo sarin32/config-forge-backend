@@ -15,7 +15,7 @@ import {ProjectSchema} from '@i/database/modals/project.modal.interface';
 import {EnvironmentSchema} from '@i/database/modals/environment.modal.interface';
 import {TokenSchema} from '@i/database/modals/token.modal.interface';
 import {VariableSchema} from '@i/database/modals/variable.modal.interface';
-import { RolesSchema } from '@i/database/modals/roles.modal.interface';
+import {RolesSchema} from '@i/database/modals/roles.modal.interface';
 
 export const userModal = connection.getCollection<UserSchema>(COLLECTION_USERS);
 

@@ -16,5 +16,5 @@ export interface ProjectSchema extends Document {
   createdAt: Date;
   createdBy: ObjectId;
   users: ProjectUser[];
-  environmentCount: number
+  environmentCount: number;
 }

@@ -6,7 +6,7 @@ import {
   RoleRepositoryInterface,
 } from '@i/database/repository/role.repository.interface';
 import {roleModal} from '../modals';
-import {RolePermissions, RolesSchema} from '@i/database/modals/roles.modal.interface';
+import {RolesSchema} from '@i/database/modals/roles.modal.interface';
 
 class RoleRepository implements RoleRepositoryInterface {
   modal = roleModal;
@@ -19,10 +19,12 @@ class RoleRepository implements RoleRepositoryInterface {
     return role;
   }
 
-  async getModuleRoleInfo<ModuleNameT extends ModuleName >({
+  async getModuleRoleInfo<ModuleNameT extends ModuleName>({
     roleId,
     module,
-  }: GetModulePermissionInfoParams<ModuleNameT>): Promise<GetModulePermissionInfoResult<ModuleNameT>> {
+  }: GetModulePermissionInfoParams<ModuleNameT>): Promise<
+    GetModulePermissionInfoResult<ModuleNameT>
+  > {
     const moduleKey = `permissions.${module}`;
 
     const projection: Record<string, number> = {};
@@ -36,4 +38,4 @@ class RoleRepository implements RoleRepositoryInterface {
   }
 }
 
-export const roleRepository = new RoleRepository()
+export const roleRepository = new RoleRepository();

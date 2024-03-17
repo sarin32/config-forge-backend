@@ -1,25 +1,24 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId} from '@i/common.interface';
 import {
   VERIFICATION_MAX_RESEND_INTERVAL,
   VERIFICATION_MAX_TRIES,
 } from '../config';
-import {emailVerificationRepository, userRepository} from '../database';
+import {emailVerificationRepository} from '../database';
 import {AuthorizationError, ConflictError, ForbiddenError} from '../errors';
 import emailUtil from '../utils/email-util';
 import {generateRandomString} from '../utils/string-util';
 import {generateTemplate} from '../utils/template-util';
-import { userService } from './user.service';
+import {userService} from './user.service';
 
 class EmailVerificationService {
   private readonly repository = emailVerificationRepository;
 
-  public async sendEmailForVerification({userId}: {userId: string}) {
-    const user = await userService.getUserInfo({userId})
+  public async sendEmailForVerification({userId}: {userId: ObjectId}) {
+    const user = await userService.getUserInfo({userId});
 
-    const existingVerification =
-      await this.repository.getEmailVerification({
-        userId: user._id,
-      });
+    const existingVerification = await this.repository.getEmailVerification({
+      userId: user._id,
+    });
 
     if (existingVerification) {
       const timeSinceLastSend =
@@ -67,19 +66,18 @@ class EmailVerificationService {
     userId,
   }: {
     otp: string;
-    userId: string | ObjectId;
+    userId: ObjectId;
   }) {
-    const verification =
-      await this.repository.getEmailVerification({
-        userId: new ObjectId(userId),
-      });
+    const verification = await this.repository.getEmailVerification({
+      userId,
+    });
 
     if (!verification)
       throw new ConflictError('No verification process has been initiated');
 
     if (verification.otp !== otp) throw new AuthorizationError('Invalid OTP');
 
-    await userService.markUserAsVerified({userId: new ObjectId(userId)});
+    await userService.markUserAsVerified({userId});
 
     return {message: 'User email verified successfully'};
   }

@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId} from '@i/common.interface';
 import {tokenRepository} from '../database';
 
 class TokenService {
@@ -8,8 +8,8 @@ class TokenService {
     return await this.repository.isValidToken(token);
   }
 
-  async revokeToken({tokenId}: {tokenId: string | ObjectId}) {
-    return await this.repository.revokeToken(new ObjectId(tokenId));
+  async revokeToken({tokenId}: {tokenId: ObjectId}) {
+    return await this.repository.revokeToken(tokenId);
   }
 }
 

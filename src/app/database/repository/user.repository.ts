@@ -1,4 +1,3 @@
-import {ObjectId} from 'mongodb';
 import {userModal} from '../modals';
 import {
   CreateUserParams,

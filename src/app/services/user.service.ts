@@ -1,16 +1,16 @@
-import {ObjectId} from 'mongodb';
 import {userRepository} from '../database';
 import {VERIFIED_USER_ROLE_ID} from '../config';
+import {ObjectId} from '@i/common.interface';
 
 type getUserInfoParams = {
-  userId: string;
+  userId: ObjectId;
 };
 
 class UserService {
   private readonly repository = userRepository;
 
   async getUserInfo({userId}: getUserInfoParams) {
-    const user = await this.repository.findUserById({id: new ObjectId(userId)});
+    const user = await this.repository.findUserById({id: userId});
 
     if (!user) throw new Error('Invalid user id');
 

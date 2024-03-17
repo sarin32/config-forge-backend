@@ -1,8 +1,8 @@
+import {ObjectId} from '@i/common.interface';
 import {
   GetRoleInfoParams as GetRoleInfoRepositoryParams,
   GetRoleInfoResult as GetRoleInfoRepositoryResult,
 } from '@i/database/repository/role.repository.interface';
-import {ObjectId} from 'mongodb';
 
 type GetRoleInfoParams = GetRoleInfoRepositoryParams;
 type GetRoleInfoResult = GetRoleInfoRepositoryResult;

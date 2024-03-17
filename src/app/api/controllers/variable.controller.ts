@@ -8,6 +8,7 @@ import {
 } from '../../utils/schema-validator';
 import {BadRequestError} from '../../errors';
 import {variableService} from '../../services/variable.service';
+import {objectId} from '../../utils/data-type-util';
 
 const createVariableSchema = objectSchema({
   object: {
@@ -33,7 +34,7 @@ export async function createVariable(ctx: Context) {
 
   ctx.body = await variableService.createVariable({
     userId,
-    environmentId,
+    environmentId: objectId(environmentId),
     key,
     value: variableValue,
     isOverride: isOverride || false,

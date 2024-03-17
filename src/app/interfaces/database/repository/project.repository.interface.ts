@@ -19,16 +19,16 @@ export interface UpdateProjectAccessParams {
 }
 
 export interface ProjectInfo {
-  projectId: ObjectId,
-  name: string,
-  createdAt: Date,
-  environmentCount: number
+  projectId: ObjectId;
+  name: string;
+  createdAt: Date;
+  environmentCount: number;
 }
 
-export type GetProjectListResult = ProjectInfo[]
+export type GetProjectListResult = ProjectInfo[];
 
 export interface GetProjectListParams {
-  userId: ObjectId
+  userId: ObjectId;
 }
 export interface ProjectRepositoryInterface {
   createProject(params: CreateProjectParams): Promise<{projectId: ObjectId}>;
@@ -37,5 +37,5 @@ export interface ProjectRepositoryInterface {
 
   updateProjectAccess(params: UpdateProjectAccessParams): Promise<void>;
 
-  getProjectList(paams: GetProjectListParams): Promise<GetProjectListResult>
+  getProjectList(paams: GetProjectListParams): Promise<GetProjectListResult>;
 }

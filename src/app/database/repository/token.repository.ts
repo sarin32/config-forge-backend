@@ -1,10 +1,10 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId} from '@i/common.interface';
 import {tokenModal} from '../modals';
 import {TokenSchema} from '@i/database/modals/token.modal.interface';
 import {
   CreateTokenParams,
   TokenRepositoryInterface,
-} from '@i/database/repository/toke.repository.interface';
+} from '@i/database/repository/token.repository.interface';
 
 class TokenRepository implements TokenRepositoryInterface {
   private modal = tokenModal;

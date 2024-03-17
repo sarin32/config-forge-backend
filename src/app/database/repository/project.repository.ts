@@ -69,7 +69,7 @@ class ProjectRepository implements ProjectRepositoryInterface {
         {
           users: {$elemMatch: {userId: userId}},
         },
-        {projection: {createdAt: 1, environmentCount: 1, name:1}}
+        {projection: {createdAt: 1, environmentCount: 1, name: 1}}
       )
       .toArray();
 
@@ -78,7 +78,7 @@ class ProjectRepository implements ProjectRepositoryInterface {
         projectId: elem._id,
         createdAt: elem.createdAt,
         environmentCount: elem.environmentCount,
-        name: elem.name
+        name: elem.name,
       };
     });
   }

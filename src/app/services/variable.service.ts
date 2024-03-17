@@ -1,5 +1,6 @@
-import {ObjectId} from 'mongodb';
-import {CreateVariable, variableRepository} from '../database';
+import {ObjectId} from '@i/common.interface';
+import {variableRepository} from '../database';
+import {CreateVariableParams} from '@i/database/repository/variablerepository.interface';
 
 class VariableService {
   private readonly repository = variableRepository;
@@ -11,14 +12,14 @@ class VariableService {
     userId,
     isOverride = false,
   }: {
-    environmentId: string | ObjectId;
+    environmentId: ObjectId;
     key: string;
     value: string;
     userId?: ObjectId;
     isOverride: boolean;
   }) {
-    const variableObject: CreateVariable = {
-      environmentId: new ObjectId(environmentId),
+    const variableObject: CreateVariableParams = {
+      environmentId,
       key,
       value,
     };
