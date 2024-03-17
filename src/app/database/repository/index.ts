@@ -4,3 +4,4 @@ export * from './project.repository';
 export * from './environment.repository';
 export * from './variable.repository';
 export * from './token.repository';
+export * from './role.repository';

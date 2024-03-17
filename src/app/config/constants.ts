@@ -1,9 +1,11 @@
 // applevel contstants
 
+import { ObjectId } from "mongodb";
+
 export const VERIFICATION_MAX_RESEND_INTERVAL = 30 * 1000; // 30 seconds
 export const VERIFICATION_MAX_TRIES = 3;
 
-export const COLLECTION_ACCESS = 'access';
+export const COLLECTION_ROLES = 'roles';
 export const COLLECTION_EMAIL_VERIFICATIONS = 'emailVerifications';
 export const COLLECTION_ENVIRONMENTS = 'environments';
 export const COLLECTION_PROJECTS = 'projects';
@@ -20,3 +22,6 @@ export const NAMESPACE_VARIABLES = `${DATABASE_CONFIG_FORGE}.${COLLECTION_VARIAB
 
 export const DETERMINISTIC_ALGORITHM =
   'AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic';
+
+export const VERIFIED_USER_ROLE_ID = new ObjectId()
+export const NON_VERIFIED_USER_ROLE_ID = new ObjectId()
