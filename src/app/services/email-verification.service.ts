@@ -1,62 +1,23 @@
 import {ObjectId} from 'mongodb';
-import {LOGIN_TOKEN_LIFETIME} from '../config/config';
 import {
   VERIFICATION_MAX_RESEND_INTERVAL,
   VERIFICATION_MAX_TRIES,
-} from '../config/constants';
+} from '../config';
 import {emailVerificationRepository, userRepository} from '../database';
 import {AuthorizationError, ConflictError, ForbiddenError} from '../errors';
 import emailUtil from '../utils/email-util';
-import {generatePassword, generateSalt} from '../utils/password-util';
 import {generateRandomString} from '../utils/string-util';
 import {generateTemplate} from '../utils/template-util';
-import {generateSignature} from '../utils/token-util';
+import { userService } from './user.service';
 
-type SignupParams = {
-  email: string;
-  password: string;
-  name: string;
-};
-
-class RegistrationService {
-  private readonly repository = userRepository;
-  private readonly emailVerificationRepository = emailVerificationRepository;
-
-  async signup({email, name, password}: SignupParams) {
-    const salt = await generateSalt();
-    password = await generatePassword(password, salt);
-
-    const isUserExists = await this.repository.isUserExistsWithEmail({email});
-    if (isUserExists)
-      throw new ConflictError('An account with this email id already exists');
-
-    const {id} = await this.repository.createUser({
-      email,
-      name,
-      password,
-      salt,
-    });
-
-    const payload = {
-      userId: id,
-    };
-    const token = await generateSignature(payload, LOGIN_TOKEN_LIFETIME);
-
-    return {
-      userId: id,
-      token: `Bearer ${token}`,
-    };
-  }
+class EmailVerificationService {
+  private readonly repository = emailVerificationRepository;
 
   public async sendEmailForVerification({userId}: {userId: string}) {
-    const user = await this.repository.findUserById({id: new ObjectId(userId)});
-    if (!user) throw new Error('Could not find the user with the given id');
-
-    if (user.isVerified)
-      throw new ConflictError('The user email is already verified');
+    const user = await userService.getUserInfo({userId})
 
     const existingVerification =
-      await this.emailVerificationRepository.getEmailVerification({
+      await this.repository.getEmailVerification({
         userId: user._id,
       });
 
@@ -76,7 +37,7 @@ class RegistrationService {
         );
       }
 
-      await this.emailVerificationRepository.updateVerificationById({
+      await this.repository.updateVerificationById({
         id: existingVerification._id,
         incrementVerificationTry: true,
       });
@@ -88,7 +49,7 @@ class RegistrationService {
     } else {
       const otp = generateRandomString(6, {includeNumbers: true});
 
-      await this.emailVerificationRepository.createEmailVerification({
+      await this.repository.createEmailVerification({
         email: user.email,
         otp,
         userId: user._id,
@@ -109,7 +70,7 @@ class RegistrationService {
     userId: string | ObjectId;
   }) {
     const verification =
-      await this.emailVerificationRepository.getEmailVerification({
+      await this.repository.getEmailVerification({
         userId: new ObjectId(userId),
       });
 
@@ -118,7 +79,7 @@ class RegistrationService {
 
     if (verification.otp !== otp) throw new AuthorizationError('Invalid OTP');
 
-    await this.repository.markUserAsVerified({userID: new ObjectId(userId)});
+    await userService.markUserAsVerified({userId: new ObjectId(userId)});
 
     return {message: 'User email verified successfully'};
   }
@@ -140,4 +101,4 @@ class RegistrationService {
   }
 }
 
-export const registrationService = new RegistrationService();
+export const emailVerificationService = new EmailVerificationService();

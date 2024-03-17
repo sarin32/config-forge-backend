@@ -1,5 +1,6 @@
 import {ObjectId} from 'mongodb';
 import {userRepository} from '../database';
+import {VERIFIED_USER_ROLE_ID} from '../config';
 
 type getUserInfoParams = {
   userId: string;
@@ -14,6 +15,13 @@ class UserService {
     if (!user) throw new Error('Invalid user id');
 
     return user;
+  }
+
+  async markUserAsVerified({userId}: {userId: ObjectId}) {
+    await this.repository.markUserAsVerified({
+      userId,
+      roleId: VERIFIED_USER_ROLE_ID,
+    });
   }
 }
 

@@ -6,9 +6,10 @@ import {
   validateObject,
 } from '../../utils/schema-validator';
 import {userService} from '../../services/user.service';
-import {BadRequestError} from '../../errors';
-import {registrationService} from '../../services/registration.service';
-import {loginService} from '../../services/login.service';
+import {BadRequestError, ForbiddenError} from '../../errors';
+import {userAuthService} from '../../services/user-auth.service';
+import {emailVerificationService} from '../../services/email-verification.service';
+import {rolesService} from '../../services/roles.service';
 
 const signUpSchema = objectSchema({
   object: {
@@ -41,7 +42,7 @@ export async function signUp(ctx: Context) {
   if (error) throw new BadRequestError(error.message);
 
   const {name, email, password} = value;
-  ctx.body = await registrationService.signup({name, email, password});
+  ctx.body = await userAuthService.signup({name, email, password});
 }
 
 export async function signIn(ctx: Context) {
@@ -53,12 +54,18 @@ export async function signIn(ctx: Context) {
   if (error) throw new BadRequestError(error.message);
 
   const {email, password} = value;
-  ctx.body = await loginService.signIn({email, password});
+  ctx.body = await userAuthService.signIn({email, password});
 }
 
 export async function sendEmailForVerification(ctx: Context) {
-  const {userId} = ctx.state.user;
-  ctx.body = await registrationService.sendEmailForVerification({userId});
+  const {userId, roleId} = ctx.state.user;
+
+  if (!(await rolesService.hasAccessToSendEmailVerificationEmail({roleId})))
+    throw new ForbiddenError(
+      'You dont have the access to sent verification email'
+    );
+
+  ctx.body = await emailVerificationService.sendEmailForVerification({userId});
 }
 
 export async function verifyEmailVerificationOTP(ctx: Context) {
@@ -71,7 +78,7 @@ export async function verifyEmailVerificationOTP(ctx: Context) {
   const {userId} = ctx.state.user;
   const {otp} = value;
 
-  ctx.body = await registrationService.verifyEmailVerificationOTP({
+  ctx.body = await emailVerificationService.verifyEmailVerificationOTP({
     userId,
     otp,
   });

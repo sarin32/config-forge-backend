@@ -4,13 +4,14 @@ import {
   CreateUserParams,
   FindUserByEmailParams,
   FindUserByIdParams,
+  MarkUserAsVerifiedParams,
   UserRepositoryInterface,
 } from '@i/database/repository/user.repository.interface';
 
 class UserRepository implements UserRepositoryInterface {
   private readonly modal = userModal;
 
-  async createUser({email, name, password, salt}: CreateUserParams) {
+  async createUser({email, name, password, salt, roleId}: CreateUserParams) {
     const result = await this.modal.insertOne({
       email,
       name,
@@ -18,6 +19,7 @@ class UserRepository implements UserRepositoryInterface {
       salt,
       createdAt: new Date(),
       isVerified: false,
+      roleId,
     });
 
     if (!result.acknowledged) {
@@ -60,11 +62,15 @@ class UserRepository implements UserRepositoryInterface {
     return result;
   }
 
-  async markUserAsVerified({userID}: {userID: ObjectId}) {
-    return await this.modal.findOneAndUpdate(
-      {_id: userID},
-      {$set: {isVerified: true}}
+  async markUserAsVerified({userId, roleId}: MarkUserAsVerifiedParams) {
+    const response = await this.modal.updateOne(
+      {_id: userId},
+      {$set: {roleId}}
     );
+
+    if (!response.acknowledged || response.modifiedCount !== 1) {
+      throw new Error('Failed to update user data');
+    }
   }
 }
 

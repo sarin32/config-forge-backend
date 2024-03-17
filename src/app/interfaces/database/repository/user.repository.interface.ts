@@ -6,6 +6,7 @@ export type CreateUserParams = {
   name: string;
   password: string;
   salt: string;
+  roleId: ObjectId;
 };
 
 export type FindUserByEmailParams = {
@@ -16,6 +17,11 @@ export type FindUserByIdParams = {
   id: ObjectId;
 };
 
+export interface MarkUserAsVerifiedParams {
+  userId: ObjectId;
+  roleId: ObjectId;
+}
+
 export interface UserRepositoryInterface {
   createUser(params: CreateUserParams): Promise<{id: ObjectId}>;
 
@@ -25,5 +31,8 @@ export interface UserRepositoryInterface {
 
   findUserById(params: FindUserByIdParams): Promise<UserSchema | null>;
 
-  markUserAsVerified(params: {userID: ObjectId}): Promise<UserSchema | null>;
+  markUserAsVerified(
+    params: MarkUserAsVerifiedParams
+  ):Promise<void>;
+
 }
