@@ -1,5 +1,5 @@
 import {Context} from 'koa';
-import {projecService} from '../../services/project.service';
+import {projectService} from '../../services/project.service';
 import {
   objectIdSchema,
   objectSchema,
@@ -32,27 +32,27 @@ export async function createProject(ctx: Context) {
 
   const {userId, roleId} = ctx.state.user;
 
-  if (!(await projecService.hasAccessToCreateProject({roleId})))
+  if (!(await projectService.hasAccessToCreateProject({roleId})))
     throw new ForbiddenError('You dont have the access to create project ');
 
   const {name} = value;
 
-  ctx.body = await projecService.createProject({userId, name});
+  ctx.body = await projectService.createProject({userId, name});
 }
 
 export async function getProjectlist(ctx: Context) {
   const {userId, roleId} = ctx.state.user;
 
-  if (!(await projecService.hasAccessToReadProject({roleId})))
+  if (!(await projectService.hasAccessToReadProject({roleId})))
     throw new ForbiddenError('You dont have the access to read project ');
 
-  ctx.body = await projecService.getProjectList({userId});
+  ctx.body = await projectService.getProjectList({userId});
 }
 
 export async function updateProjectDetails(ctx: Context) {
   const {userId, roleId} = ctx.state.user;
 
-  if (!(await projecService.hasAccessToCreateProject({roleId})))
+  if (!(await projectService.hasAccessToCreateProject({roleId})))
     throw new ForbiddenError('You dont have the access to update projects');
 
   const {error, value} = validateObject<{name: string; projectId: string}>(
@@ -65,14 +65,14 @@ export async function updateProjectDetails(ctx: Context) {
   if (error) throw new BadRequestError(error.message);
 
   if (
-    !(await projecService.hasEditAccessToProject({
+    !(await projectService.hasEditAccessToProject({
       projectId: objectId(projectId),
       userId,
     }))
   )
     throw new ForbiddenError('You dont have the access to this project');
 
-  ctx.body = await projecService.updateProject({
+  ctx.body = await projectService.updateProject({
     // userId,
     name,
     projectId: objectId(projectId),

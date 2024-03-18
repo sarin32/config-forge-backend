@@ -70,4 +70,4 @@ class ProjectService implements ProjectServiceInterface {
   }
 }
 
-export const projecService = new ProjectService();
+export const projectService = new ProjectService();
