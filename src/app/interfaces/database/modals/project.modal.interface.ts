@@ -1,10 +1,5 @@
 import {Document, ObjectId} from 'mongodb';
-
-export enum ProjectAccessLevel {
-  READ = 'read',
-  WRITE = 'write',
-  ADMIN = 'admin',
-}
+import {ProjectAccessLevel} from '../../../config';
 
 export interface ProjectUser {
   userId: ObjectId;

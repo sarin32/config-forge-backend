@@ -1,16 +1,17 @@
 import {projectModal} from '../modals';
 import {
   CreateProjectParams,
+  GetAccessLevelToProjectParams,
+  GetAccessLevelToProjectResult,
   GetProjectListParams,
   GetProjectListResult,
   ProjectRepositoryInterface,
   ProjectUserParams,
   UpdateProjectAccessParams,
+  UpdateProjectParams,
 } from '@i/database/repository/project.repository.interface';
-import {
-  ProjectAccessLevel,
-  ProjectUser,
-} from '../../interfaces/database/modals/project.modal.interface';
+import {ProjectUser} from '../../interfaces/database/modals/project.modal.interface';
+import {ProjectAccessLevel} from '../../config';
 
 class ProjectRepository implements ProjectRepositoryInterface {
   private modal = projectModal;
@@ -81,6 +82,31 @@ class ProjectRepository implements ProjectRepositoryInterface {
         name: elem.name,
       };
     });
+  }
+
+  async updateProject({projectId, name}: UpdateProjectParams): Promise<void> {
+    const response = await this.modal.updateOne(
+      {_id: projectId},
+      {$set: {name: name}}
+    );
+
+    if (!response.acknowledged || response.modifiedCount !== 1) {
+      throw new Error('Failed to update project data');
+    }
+  }
+
+  async getAccessLevelToProject({
+    projectId,
+    userId,
+  }: GetAccessLevelToProjectParams): Promise<GetAccessLevelToProjectResult> {
+    return (
+      await this.modal.findOne(
+        {_id: projectId, 'users.userId': userId},
+        {projection: {users: 1}}
+      )
+    )?.users.find(elem => {
+      return elem.userId.toString() === userId.toString();
+    })?.accessLevel;
   }
 }
 

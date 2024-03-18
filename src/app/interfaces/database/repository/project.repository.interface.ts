@@ -1,5 +1,5 @@
 import {ObjectId} from 'mongodb';
-import {ProjectAccessLevel} from '../modals/project.modal.interface';
+import {ProjectAccessLevel} from '../../../config';
 
 export interface CreateProjectParams {
   name: string;
@@ -30,6 +30,19 @@ export type GetProjectListResult = ProjectInfo[];
 export interface GetProjectListParams {
   userId: ObjectId;
 }
+
+export interface UpdateProjectParams {
+  projectId: ObjectId;
+  name: string;
+}
+
+export interface GetAccessLevelToProjectParams {
+  projectId: ObjectId;
+  userId: ObjectId;
+}
+
+export type GetAccessLevelToProjectResult = ProjectAccessLevel | undefined;
+
 export interface ProjectRepositoryInterface {
   createProject(params: CreateProjectParams): Promise<{projectId: ObjectId}>;
 
@@ -38,4 +51,10 @@ export interface ProjectRepositoryInterface {
   updateProjectAccess(params: UpdateProjectAccessParams): Promise<void>;
 
   getProjectList(paams: GetProjectListParams): Promise<GetProjectListResult>;
+
+  updateProject(params: UpdateProjectParams): Promise<void>;
+
+  getAccessLevelToProject(
+    params: GetAccessLevelToProjectParams
+  ): Promise<GetAccessLevelToProjectResult>;
 }
