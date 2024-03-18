@@ -1,5 +1,5 @@
 import {ObjectId} from 'mongodb';
 
 export function objectId(value?: string): ObjectId {
-  return objectId(value);
+  return new ObjectId(value);
 }
