@@ -1,7 +1,7 @@
 import {userRepository} from '../database';
 import {VERIFIED_USER_ROLE_ID} from '../config';
 import {ObjectId} from '@i/common.interface';
-import { objectId } from '../utils/data-type-util';
+import {objectId} from '../utils/data-type-util';
 
 type getUserInfoParams = {
   userId: ObjectId;

@@ -25,14 +25,35 @@ export interface ProjectInfo {
   name: string;
 }
 
+export interface HasAccessParams {
+  roleId: ObjectId;
+}
+
+export interface HasEditAccessToProjectParams {
+  projectId: ObjectId;
+  userId: ObjectId;
+}
+
 export type GetProjectListResult = ProjectInfo[];
 
-export type AddProjectUserResult = void;
-
+export interface UpdateProjectParams {
+  projectId: ObjectId;
+  name: string;
+}
 export interface ProjectServiceInterface {
   createProject(params: CreateProjectParams): Promise<CreateProjectResult>;
 
   getProjectList(params: GetProjectParams): Promise<GetProjectListResult>;
 
-  addProjectUser(params: AddProjectUserParams): Promise<AddProjectUserResult>;
+  addProjectUser(params: AddProjectUserParams): Promise<void>;
+
+  updateProject(params: UpdateProjectParams): Promise<void>;
+
+  hasAccessToCreateProject(params: HasAccessParams): Promise<boolean>;
+
+  hasAccessToReadProject(params: HasAccessParams): Promise<boolean>;
+
+  hasEditAccessToProject(
+    params: HasEditAccessToProjectParams
+  ): Promise<boolean>;
 }

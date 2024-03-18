@@ -1,8 +1,15 @@
+import {
+  GenerateLoginTokenParams,
+  SignInParams,
+  SignupParams,
+  SignupResult,
+  UserAuthServiceInterface,
+} from '@i/services/user-auth.service.interface';
 import {NON_VERIFIED_USER_ROLE_ID} from '../config';
 import {LOGIN_TOKEN_LIFETIME} from '../config/config';
 import {userRepository} from '../database';
 import {AuthorizationError, ConflictError} from '../errors';
-import { objectId } from '../utils/data-type-util';
+import {objectId} from '../utils/data-type-util';
 import {
   generatePassword,
   generateSalt,
@@ -10,21 +17,10 @@ import {
 } from '../utils/password-util';
 import {generateSignature} from '../utils/token-util';
 
-type SignupParams = {
-  email: string;
-  password: string;
-  name: string;
-};
-
-type SignInParams = {
-  email: string;
-  password: string;
-};
-
-class UserAuthService {
+class UserAuthService implements UserAuthServiceInterface {
   private readonly repository = userRepository;
 
-  async signup({email, name, password}: SignupParams) {
+  async signup({email, name, password}: SignupParams): Promise<SignupResult> {
     const salt = await generateSalt();
     password = await generatePassword(password, salt);
 
@@ -32,25 +28,22 @@ class UserAuthService {
     if (isUserExists)
       throw new ConflictError('An account with this email id already exists');
 
-    const roleId = NON_VERIFIED_USER_ROLE_ID;
+    const roleId = objectId(NON_VERIFIED_USER_ROLE_ID);
 
     const {id} = await this.repository.createUser({
       email,
       name,
       password,
       salt,
-      roleId: objectId(NON_VERIFIED_USER_ROLE_ID),
+      roleId: roleId,
     });
-
-    const payload = {
-      userId: id,
-      roleId,
-    };
-    const token = await generateSignature(payload, LOGIN_TOKEN_LIFETIME);
 
     return {
       userId: id,
-      token: `Bearer ${token}`,
+      token: await this.generateLoginToken({
+        roleId,
+        userId: id,
+      }),
     };
   }
 
@@ -65,15 +58,25 @@ class UserAuthService {
     );
     if (!isValidPassword) throw new AuthorizationError('Invalid Credenials');
 
-    const payload = {
-      userId: user._id,
-      roleId: user.roleId,
-    };
-    const token = await generateSignature(payload, LOGIN_TOKEN_LIFETIME);
     return {
       userId: user._id,
-      token: `Bearer ${token}`,
+      token: await this.generateLoginToken({
+        roleId: user.roleId,
+        userId: user._id,
+      }),
     };
+  }
+
+  async generateLoginToken({
+    roleId,
+    userId,
+  }: GenerateLoginTokenParams): Promise<string> {
+    const payload = {
+      userId,
+      roleId,
+    };
+    const token = await generateSignature(payload, LOGIN_TOKEN_LIFETIME);
+    return `Bearer ${token}`;
   }
 }
 

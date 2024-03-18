@@ -3,11 +3,12 @@ import {
   GetRoleInfoResult,
 } from '@i/database/repository/role.repository.interface';
 import {
-  HasAccessParams,
-  HasAccessResult,
+  GetModulePermissionInfoParams,
+  GetModulePermissionInfoResult,
   RoleServiceInterface,
 } from '@i/services/roles.service.interface';
 import {roleRepository} from '../database';
+import {RolePermissions} from '@i/database/modals/roles.modal.interface';
 
 class RolesService implements RoleServiceInterface {
   repository = roleRepository;
@@ -16,30 +17,13 @@ class RolesService implements RoleServiceInterface {
     return await this.repository.getRoleInfo({roleId});
   }
 
-  async hasAccessToSendEmailVerificationEmail({
+  async getModuleRoleInfo<ModuleNameT extends keyof RolePermissions>({
+    module,
     roleId,
-  }: HasAccessParams): HasAccessResult {
-    const respose = await this.repository.getModuleRoleInfo({
-      roleId,
-      module: 'emailVerification',
-    });
-    return respose?.send || false;
-  }
-
-  async hasAccessToCreateProject({roleId}: HasAccessParams): HasAccessResult {
-    const respose = await this.repository.getModuleRoleInfo({
-      roleId,
-      module: 'projects',
-    });
-    return respose?.write || false;
-  }
-
-  async hasAccessToReadProject({roleId}: HasAccessParams): HasAccessResult {
-    const respose = await this.repository.getModuleRoleInfo({
-      roleId,
-      module: 'projects',
-    });
-    return respose?.read || false;
+  }: GetModulePermissionInfoParams<ModuleNameT>): Promise<
+    GetModulePermissionInfoResult<ModuleNameT>
+  > {
+    return await this.repository.getModuleRoleInfo({module, roleId});
   }
 }
 

@@ -2,25 +2,25 @@ import {ObjectId} from '@i/common.interface';
 import {
   GetRoleInfoParams as GetRoleInfoRepositoryParams,
   GetRoleInfoResult as GetRoleInfoRepositoryResult,
+  ModuleName,
+  RolePermissions,
 } from '@i/database/repository/role.repository.interface';
 
 type GetRoleInfoParams = GetRoleInfoRepositoryParams;
 type GetRoleInfoResult = GetRoleInfoRepositoryResult;
 
-export interface HasAccessParams {
+export interface GetModulePermissionInfoParams<ModuleNameT extends ModuleName> {
   roleId: ObjectId;
+  module: ModuleNameT;
 }
 
-export type HasAccessResult = Promise<boolean>;
+export type GetModulePermissionInfoResult<ModuleNameT extends ModuleName> =
+  RolePermissions[ModuleNameT];
 
 export interface RoleServiceInterface {
   getRoleInfo(params: GetRoleInfoParams): Promise<GetRoleInfoResult>;
 
-  hasAccessToSendEmailVerificationEmail(
-    params: HasAccessParams
-  ): HasAccessResult;
-
-  hasAccessToCreateProject(params: HasAccessParams): HasAccessResult;
-
-  hasAccessToReadProject(params: HasAccessParams): HasAccessResult;
+  getModuleRoleInfo<ModuleNameT extends ModuleName>(
+    params: GetModulePermissionInfoParams<ModuleNameT>
+  ): Promise<GetModulePermissionInfoResult<ModuleNameT>>;
 }

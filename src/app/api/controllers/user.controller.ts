@@ -9,7 +9,6 @@ import {userService} from '../../services/user.service';
 import {BadRequestError, ForbiddenError} from '../../errors';
 import {userAuthService} from '../../services/user-auth.service';
 import {emailVerificationService} from '../../services/email-verification.service';
-import {rolesService} from '../../services/roles.service';
 
 const signUpSchema = objectSchema({
   object: {
@@ -60,7 +59,11 @@ export async function signIn(ctx: Context) {
 export async function sendEmailForVerification(ctx: Context) {
   const {userId, roleId} = ctx.state.user;
 
-  if (!(await rolesService.hasAccessToSendEmailVerificationEmail({roleId})))
+  if (
+    !(await emailVerificationService.hasAccessToSendEmailVerificationEmail({
+      roleId,
+    }))
+  )
     throw new ForbiddenError(
       'You dont have the access to sent verification email'
     );
@@ -75,7 +78,17 @@ export async function verifyEmailVerificationOTP(ctx: Context) {
 
   if (error) throw new BadRequestError(error.message);
 
-  const {userId} = ctx.state.user;
+  const {userId, roleId} = ctx.state.user;
+
+  if (
+    !(await emailVerificationService.hasAccessToVerifyEmailVerificationOTP({
+      roleId,
+    }))
+  )
+    throw new ForbiddenError(
+      'You dont have the access to enter the verification OTP'
+    );
+
   const {otp} = value;
 
   ctx.body = await emailVerificationService.verifyEmailVerificationOTP({

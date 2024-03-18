@@ -1,19 +1,24 @@
 import {ObjectId} from 'mongodb';
-import {RolePermissions, RolesSchema} from '../modals/roles.modal.interface';
+import {
+  RolePermissions as RoleModalPermissions,
+  RolesSchema,
+} from '../modals/roles.modal.interface';
 
 export interface GetRoleInfoParams {
   roleId: ObjectId;
 }
 
-export type ModuleName = keyof RolePermissions;
+export type ModuleName = keyof RoleModalPermissions;
 
 export interface GetModulePermissionInfoParams<ModuleNameT extends ModuleName> {
   roleId: ObjectId;
   module: ModuleNameT;
 }
 
+export type RolePermissions = RoleModalPermissions;
+
 export type GetModulePermissionInfoResult<ModuleNameT extends ModuleName> =
-  RolePermissions[ModuleNameT];
+  RoleModalPermissions[ModuleNameT];
 
 export type GetRoleInfoResult = RolesSchema;
 
