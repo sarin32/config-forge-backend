@@ -1,6 +1,10 @@
 import * as KoaRouter from '@koa/router';
 import {tokenMiddleware} from '../middlewares';
-import {createProject, getProjectlist} from '../controllers/project.controller';
+import {
+  createProject,
+  getProjectlist,
+  updateProjectDetails,
+} from '../controllers/project.controller';
 
 const router = new KoaRouter({
   prefix: '/project',
@@ -8,8 +12,10 @@ const router = new KoaRouter({
 
 router.use(tokenMiddleware);
 
-router.post('/create', tokenMiddleware, createProject);
+router.post('/create', createProject);
 
-router.post('/getList', tokenMiddleware, getProjectlist);
+router.post('/edit', updateProjectDetails);
+
+router.post('/getList', getProjectlist);
 
 export default router;

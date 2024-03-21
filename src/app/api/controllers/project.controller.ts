@@ -73,7 +73,6 @@ export async function updateProjectDetails(ctx: Context) {
     throw new ForbiddenError('You dont have the access to this project');
 
   ctx.body = await projectService.updateProject({
-    // userId,
     name,
     projectId: objectId(projectId),
   });
