@@ -5,6 +5,8 @@ import {
   GetAccessLevelToProjectResult,
   GetProjectListParams,
   GetProjectListResult,
+  GetProjectParams,
+  GetProjectResult,
   ProjectRepositoryInterface,
   ProjectUserParams,
   UpdateProjectAccessParams,
@@ -29,6 +31,14 @@ class ProjectRepository implements ProjectRepositoryInterface {
       throw new Error('Failed to insert project data');
     }
     return {projectId: response.insertedId};
+  }
+
+  async getProject({projectId}: GetProjectParams): Promise<GetProjectResult> {
+    const project = await this.modal.findOne({_id: projectId});
+
+    if (!project) throw new Error('No project found with the given id');
+
+    return project;
   }
 
   async addProjectUser({projectId, userId, accessLevel}: ProjectUserParams) {

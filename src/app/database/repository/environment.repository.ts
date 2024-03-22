@@ -2,6 +2,8 @@ import {environmentModal} from '../modals';
 import {
   CreateEnvironmentParams,
   EnvironmentRepositoryInterface,
+  GetEnvironmentListParams,
+  GetEnvironmentListResultObject,
 } from '@i/database/repository/environment.repository.interface';
 
 class EnvironmentRepository implements EnvironmentRepositoryInterface {
@@ -18,6 +20,13 @@ class EnvironmentRepository implements EnvironmentRepositoryInterface {
       throw new Error('Failed to insert environment data');
     }
     return {environmentId: response.insertedId};
+  }
+
+  async getEnvironmentList({
+    projectId,
+  }: GetEnvironmentListParams): Promise<GetEnvironmentListResultObject[]> {
+    const environments = await this.modal.find({projectId}).toArray();
+    return environments;
   }
 }
 

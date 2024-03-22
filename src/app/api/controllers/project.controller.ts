@@ -22,6 +22,12 @@ const updateProjectSchema = objectSchema({
   },
 });
 
+const getProjectdataInDetailSchema = objectSchema({
+  object: {
+    projectId: objectIdSchema(),
+  },
+});
+
 export async function createProject(ctx: Context) {
   const {error, value} = validateObject<{name: string}>(
     createProjectSchema,
@@ -74,6 +80,38 @@ export async function updateProjectDetails(ctx: Context) {
 
   ctx.body = await projectService.updateProject({
     name,
+    projectId: objectId(projectId),
+  });
+}
+
+export async function getProjectDataInDetail(ctx: Context) {
+  const {userId, roleId} = ctx.state.user;
+
+  // check for role level access to read projects
+  if (!(await projectService.hasAccessToReadProject({roleId})))
+    throw new ForbiddenError('You dont have the access to read projects');
+
+  const {error, value} = validateObject<{projectId: string}>(
+    getProjectdataInDetailSchema,
+    ctx.request.body
+  );
+
+  const {projectId} = value;
+
+  if (error) throw new BadRequestError(error.message);
+
+  // check for access to the specific project resource
+  if (
+    !(await projectService.hasReadAccessToProject({
+      projectId: objectId(projectId),
+      userId,
+    }))
+  )
+    throw new ForbiddenError('You dont have the access to this project');
+
+  // get the data
+  ctx.body = await projectService.getProjectDataInDetail({
+    userId,
     projectId: objectId(projectId),
   });
 }

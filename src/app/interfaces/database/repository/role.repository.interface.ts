@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId, WithId} from 'mongodb';
 import {
   RolePermissions as RoleModalPermissions,
   RolesSchema,
@@ -20,7 +20,7 @@ export type RolePermissions = RoleModalPermissions;
 export type GetModulePermissionInfoResult<ModuleNameT extends ModuleName> =
   RoleModalPermissions[ModuleNameT];
 
-export type GetRoleInfoResult = RolesSchema;
+export type GetRoleInfoResult = WithId<RolesSchema>;
 
 export interface RoleRepositoryInterface {
   getRoleInfo(params: GetRoleInfoParams): Promise<GetRoleInfoResult>;

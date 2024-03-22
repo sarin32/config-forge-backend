@@ -7,10 +7,14 @@ import {
   ProjectServiceInterface,
   UpdateProjectParams,
   HasAccessParams,
-  HasEditAccessToProjectParams,
+  HasAccessToProjectParams,
+  GetProjectDataInDetailParams,
+  GetProjectDataInDetailResult,
 } from '@i/services/project.service.interface';
 import {rolesService} from './roles.service';
 import {ProjectAccessLevel} from '../config';
+import {environmentService} from './environment.service';
+import {variableService} from './variable.service';
 
 class ProjectService implements ProjectServiceInterface {
   private readonly repository = projectRepository;
@@ -34,7 +38,7 @@ class ProjectService implements ProjectServiceInterface {
   async hasEditAccessToProject({
     projectId,
     userId,
-  }: HasEditAccessToProjectParams): Promise<boolean> {
+  }: HasAccessToProjectParams): Promise<boolean> {
     const access = await this.repository.getAccessLevelToProject({
       projectId,
       userId,
@@ -45,6 +49,24 @@ class ProjectService implements ProjectServiceInterface {
     return [ProjectAccessLevel.ADMIN, ProjectAccessLevel.WRITE].includes(
       access
     );
+  }
+
+  async hasReadAccessToProject({
+    projectId,
+    userId,
+  }: HasAccessToProjectParams): Promise<boolean> {
+    const access = await this.repository.getAccessLevelToProject({
+      projectId,
+      userId,
+    });
+
+    if (!access) return false;
+
+    return [
+      ProjectAccessLevel.ADMIN,
+      ProjectAccessLevel.WRITE,
+      ProjectAccessLevel.READ,
+    ].includes(access);
   }
 
   async createProject({name, userId}: CreateProjectParams) {
@@ -67,6 +89,50 @@ class ProjectService implements ProjectServiceInterface {
 
   async updateProject({name, projectId}: UpdateProjectParams): Promise<void> {
     await this.repository.updateProject({name, projectId});
+  }
+
+  async getProjectDataInDetail({
+    projectId,
+    userId,
+  }: GetProjectDataInDetailParams): Promise<GetProjectDataInDetailResult> {
+    const project = await this.repository.getProject({projectId});
+
+    const result: GetProjectDataInDetailResult = {
+      createdAt: project.createdAt,
+      environments: [],
+      id: project._id,
+      name: project.name,
+    };
+
+    const environments = await environmentService.getEnvironmentList({
+      projectId,
+    });
+
+    for (const environment of environments) {
+      const variables = await variableService.getVariableList({
+        environmentId: environment._id,
+        userId,
+      });
+
+      result.environments.push({
+        environmentName: environment.name,
+        id: environment._id,
+        variables: variables.map(variable => {
+          const isOverride =
+            (variable.overrideUserId &&
+              variable.overrideUserId.toString() === userId.toString()) ||
+            false;
+
+          return {
+            isOverride,
+            key: variable.key,
+            value: variable.value,
+          };
+        }),
+      });
+    }
+
+    return result;
   }
 }
 

@@ -2,16 +2,16 @@ import {
   GetModulePermissionInfoParams,
   GetModulePermissionInfoResult,
   GetRoleInfoParams,
+  GetRoleInfoResult,
   ModuleName,
   RoleRepositoryInterface,
 } from '@i/database/repository/role.repository.interface';
 import {roleModal} from '../modals';
-import {RolesSchema} from '@i/database/modals/roles.modal.interface';
 
 class RoleRepository implements RoleRepositoryInterface {
   modal = roleModal;
 
-  async getRoleInfo({roleId}: GetRoleInfoParams): Promise<RolesSchema> {
+  async getRoleInfo({roleId}: GetRoleInfoParams): Promise<GetRoleInfoResult> {
     const role = await this.modal.findOne({_id: roleId});
 
     if (!role) throw new Error('No role found with the given id');

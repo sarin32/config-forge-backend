@@ -1,8 +1,13 @@
-import {ObjectId} from '@i/common.interface';
 import {variableRepository} from '../database';
-import {CreateVariableParams} from '@i/database/repository/variablerepository.interface';
+import {CreateVariableParams as CreateVariableRepoParams} from '@i/database/repository/variablerepository.interface';
+import {
+  CreateVariableParams,
+  GetVariableListObject,
+  GetVariableListParams,
+  VariableServiceInterface,
+} from '@i/services/variable.service.interface';
 
-class VariableService {
+class VariableService implements VariableServiceInterface {
   private readonly repository = variableRepository;
 
   async createVariable({
@@ -11,14 +16,8 @@ class VariableService {
     value,
     userId,
     isOverride = false,
-  }: {
-    environmentId: ObjectId;
-    key: string;
-    value: string;
-    userId?: ObjectId;
-    isOverride: boolean;
-  }) {
-    const variableObject: CreateVariableParams = {
+  }: CreateVariableParams) {
+    const variableObject: CreateVariableRepoParams = {
       environmentId,
       key,
       value,
@@ -27,6 +26,13 @@ class VariableService {
     if (isOverride) variableObject.overrideUserId = userId;
 
     await this.repository.createVariable(variableObject);
+  }
+
+  async getVariableList({
+    environmentId,
+    userId,
+  }: GetVariableListParams): Promise<GetVariableListObject[]> {
+    return await this.repository.getVariableList({environmentId, userId});
   }
 }
 

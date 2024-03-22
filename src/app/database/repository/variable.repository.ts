@@ -1,6 +1,8 @@
 import {
   CreateVariableParams,
   CreateVariableResult,
+  GetVariableListObject,
+  GetVariableListParams,
   VariableRepositoryInterface,
 } from '@i/database/repository/variablerepository.interface';
 import {variableModal} from '../modals';
@@ -29,6 +31,18 @@ class VariableRepository implements VariableRepositoryInterface {
     }
 
     return {variableId: response.insertedId};
+  }
+
+  async getVariableList({
+    environmentId,
+    userId,
+  }: GetVariableListParams): Promise<GetVariableListObject[]> {
+    return await this.modal
+      .find({
+        environmentId,
+        overrideUserId: {$in: [userId, undefined]},
+      })
+      .toArray();
   }
 }
 

@@ -29,7 +29,7 @@ export interface HasAccessParams {
   roleId: ObjectId;
 }
 
-export interface HasEditAccessToProjectParams {
+export interface HasAccessToProjectParams {
   projectId: ObjectId;
   userId: ObjectId;
 }
@@ -39,6 +39,25 @@ export type GetProjectListResult = ProjectInfo[];
 export interface UpdateProjectParams {
   projectId: ObjectId;
   name: string;
+}
+
+export interface GetProjectDataInDetailParams {
+  projectId: ObjectId;
+  userId: ObjectId;
+}
+export interface GetProjectDataInDetailResult {
+  id: ObjectId;
+  name: string;
+  createdAt: Date;
+  environments: {
+    id: ObjectId;
+    environmentName: string;
+    variables: {
+      key: string;
+      value: string;
+      isOverride: boolean;
+    }[];
+  }[];
 }
 export interface ProjectServiceInterface {
   createProject(params: CreateProjectParams): Promise<CreateProjectResult>;
@@ -53,7 +72,11 @@ export interface ProjectServiceInterface {
 
   hasAccessToReadProject(params: HasAccessParams): Promise<boolean>;
 
-  hasEditAccessToProject(
-    params: HasEditAccessToProjectParams
-  ): Promise<boolean>;
+  hasEditAccessToProject(params: HasAccessToProjectParams): Promise<boolean>;
+
+  hasReadAccessToProject(params: HasAccessToProjectParams): Promise<boolean>;
+
+  getProjectDataInDetail(
+    params: GetProjectDataInDetailParams
+  ): Promise<GetProjectDataInDetailResult>;
 }

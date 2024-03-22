@@ -5,7 +5,7 @@ import {
   stringSchema,
   validateObject,
 } from '../../utils/schema-validator';
-import {BadRequestError} from '../../errors';
+import {BadRequestError, ForbiddenError} from '../../errors';
 import {environmentService} from '../../services/environment.service';
 import {objectId} from '../../utils/data-type-util';
 
@@ -22,9 +22,14 @@ export async function createEnvironment(ctx: Context) {
     projectId: string;
   }>(createEnvironmentSchema, ctx.request.body);
 
+  const {userId, roleId} = ctx.state.user;
+
+  if (!environmentService.hasAccessToCreateEnvironment({roleId})) {
+    throw new ForbiddenError("You don't have the acces to create environment");
+  }
+
   if (error) throw new BadRequestError(error.message);
 
-  const {userId} = ctx.state.user;
   const {name, projectId} = value;
 
   ctx.body = await environmentService.createEnvironment({

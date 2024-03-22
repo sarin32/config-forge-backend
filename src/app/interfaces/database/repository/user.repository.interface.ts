@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId, WithId} from 'mongodb';
 import {UserSchema} from '../modals/user.modal.interface';
 
 export type CreateUserParams = {
@@ -25,11 +25,13 @@ export interface MarkUserAsVerifiedParams {
 export interface UserRepositoryInterface {
   createUser(params: CreateUserParams): Promise<{id: ObjectId}>;
 
-  findUserByEmail(params: FindUserByEmailParams): Promise<UserSchema | null>;
+  findUserByEmail(
+    params: FindUserByEmailParams
+  ): Promise<WithId<UserSchema> | null>;
 
   isUserExistsWithEmail(params: FindUserByEmailParams): Promise<boolean>;
 
-  findUserById(params: FindUserByIdParams): Promise<UserSchema | null>;
+  findUserById(params: FindUserByIdParams): Promise<WithId<UserSchema> | null>;
 
   markUserAsVerified(params: MarkUserAsVerifiedParams): Promise<void>;
 }

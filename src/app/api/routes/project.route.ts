@@ -2,6 +2,7 @@ import * as KoaRouter from '@koa/router';
 import {tokenMiddleware} from '../middlewares';
 import {
   createProject,
+  getProjectDataInDetail,
   getProjectlist,
   updateProjectDetails,
 } from '../controllers/project.controller';
@@ -17,5 +18,7 @@ router.post('/create', createProject);
 router.post('/edit', updateProjectDetails);
 
 router.post('/getList', getProjectlist);
+
+router.post('/getDataInDetail', getProjectDataInDetail);
 
 export default router;
