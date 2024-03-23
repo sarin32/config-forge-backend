@@ -1,6 +1,6 @@
 import * as KoaRouter from '@koa/router';
 import {tokenMiddleware} from '../middlewares';
-import {createEnvironment} from '../controllers/environment.controller';
+import {createEnvironment} from '../controllers/environment/environment.controller';
 
 const router = new KoaRouter({
   prefix: '/environment',

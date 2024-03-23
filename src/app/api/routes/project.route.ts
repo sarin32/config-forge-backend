@@ -5,7 +5,7 @@ import {
   getProjectDataInDetail,
   getProjectlist,
   updateProjectDetails,
-} from '../controllers/project.controller';
+} from '../controllers/project/project.controller';
 
 const router = new KoaRouter({
   prefix: '/project',

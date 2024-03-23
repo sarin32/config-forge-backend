@@ -5,7 +5,7 @@ import {
   signIn,
   signUp,
   verifyEmailVerificationOTP,
-} from '../controllers/user.controller';
+} from '../controllers/user/user.controller';
 import {tokenMiddleware} from '../middlewares';
 
 const router = new KoaRouter({
