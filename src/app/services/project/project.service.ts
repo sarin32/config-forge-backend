@@ -127,6 +127,7 @@ class ProjectService implements ProjectServiceInterface {
             isOverride,
             key: variable.key,
             value: variable.value,
+            id: variable._id,
           };
         }),
       });
