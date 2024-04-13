@@ -25,7 +25,8 @@ class VariableService implements VariableServiceInterface {
 
     if (isOverride) variableObject.overrideUserId = userId;
 
-    await this.repository.createVariable(variableObject);
+    const response = await this.repository.createVariable(variableObject);
+    return {variableId: response.variableId};
   }
 
   async getVariableList({

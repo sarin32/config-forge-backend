@@ -9,6 +9,10 @@ export interface CreateVariableParams {
   isOverride: boolean;
 }
 
+export interface CreateVariableResponse {
+  variableId: ObjectId;
+}
+
 export interface GetVariableListParams {
   userId: ObjectId;
   environmentId: ObjectId;
@@ -16,7 +20,7 @@ export interface GetVariableListParams {
 export type GetVariableListObject = GetVariableListRepoObject;
 
 export interface VariableServiceInterface {
-  createVariable(params: CreateVariableParams): Promise<void>;
+  createVariable(params: CreateVariableParams): Promise<CreateVariableResponse>;
 
   getVariableList(
     params: GetVariableListParams
