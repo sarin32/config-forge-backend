@@ -18,6 +18,16 @@ FROM node:20-alpine AS final
 
 WORKDIR /app
 
+# Install MongoDB enterprise version
+RUN apk add --no-cache gnupg curl && \
+    curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
+    gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor && \
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | \
+    tee /etc/apk/repositories && \
+    apk update && \
+    apk add mongodb-org
+
+
 # Copy the built files from the 'builder' stage
 COPY --from=builder /app/build .
 
