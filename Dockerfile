@@ -1,8 +1,14 @@
 # Stage 1: Builder
-FROM node:20-alpine AS builder
+FROM ubuntu:20.04 AS builder
 
 WORKDIR /app
 
+# Install Node.js
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
+    
 # Install dependencies to build native addons
 RUN apk add --no-cache python3 make g++
 
