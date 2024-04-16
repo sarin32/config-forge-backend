@@ -6,6 +6,15 @@ WORKDIR /app
 # Install dependencies to build native addons
 RUN apk add --no-cache python3 make g++
 
+# Install MongoDB enterprise version
+RUN apk add --no-cache gnupg curl && \
+    curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
+    gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor && \
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | \
+    tee /etc/apk/repositories && \
+    apk update && \
+    apk add mongodb-org
+
 # Copy the entire content of the local directory into the Docker image
 COPY . .
 
