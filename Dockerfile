@@ -3,6 +3,9 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Install dependencies to build native addons
+RUN apk add --no-cache python3 make g++
+
 # Copy the entire content of the local directory into the Docker image
 COPY . .
 
@@ -27,11 +30,6 @@ COPY package-lock.json .
 
 # Install only production dependencies
 RUN npm install --only=production
-
-# install infiisical
-RUN apk add --no-cache bash curl && curl -1sLf \
-'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.alpine.sh' | bash \
-&& apk add infisical
 
 # Set the default port as an environment variable
 ENV PORT=3000
