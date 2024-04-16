@@ -1,6 +1,5 @@
 import {projectRepository} from '../../database';
 import {
-  AddProjectUserParams,
   CreateProjectParams,
   GetProjectParams,
   GetProjectListResult,
@@ -77,9 +76,9 @@ class ProjectService implements ProjectServiceInterface {
     return {projectId};
   }
 
-  addProjectUser({}: AddProjectUserParams): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
+  // addProjectUser({}: AddProjectUserParams): Promise<void> {
+  //   throw new Error('Method not implemented.');
+  // }
 
   async getProjectList({
     userId,
