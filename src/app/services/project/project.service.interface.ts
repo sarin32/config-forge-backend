@@ -64,7 +64,7 @@ export interface ProjectServiceInterface {
 
   getProjectList(params: GetProjectParams): Promise<GetProjectListResult>;
 
-  addProjectUser(params: AddProjectUserParams): Promise<void>;
+  // addProjectUser(params: AddProjectUserParams): Promise<void>;
 
   updateProject(params: UpdateProjectParams): Promise<void>;
 
