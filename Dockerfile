@@ -9,17 +9,17 @@ RUN apt-get update && \
   curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
   apt-get install -y nodejs
 
-# Install dependencies to build native addons
-RUN apk add --no-cache python3 make g++
+# Mongodb Enterprise version installation
+RUN sudo apt-get install gnupg curl
+RUN  curl -fsSL https://pgp.mongodb.com/server-7.0.asc | \
+   sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg \
+   --dearmor
+RUN echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] http://repo.mongodb.com/apt/ubuntu focal/mongodb-enterprise/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-enterprise-7.0.list
+RUN sudo apt-get update
+RUN sudo apt-get install -y mongodb-enterprise
 
-# Install MongoDB enterprise version
-RUN apk add --no-cache gnupg curl && \
-  curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
-  gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor && \
-  echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/7.0 multiverse" | \
-  tee /etc/apk/repositories && \
-  apk update && \
-  apk add mongodb-org
+# Install dependencies to build native addons
+# RUN apk add --no-cache python3 make g++
 
 # Copy the entire content of the local directory into the Docker image
 COPY . .
