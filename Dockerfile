@@ -11,6 +11,7 @@ RUN apt-get update && \
 
 # Mongodb Enterprise version installation
 RUN apt-get install -y gnupg curl && \
+    mkdir -p /usr/share/keyrings/ && \
     curl -fsSL https://pgp.mongodb.com/server-7.0.asc | \
     gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg \
     --dearmor && \
