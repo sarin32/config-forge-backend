@@ -6,6 +6,7 @@ import * as dotEnv from 'dotenv';
 dotEnv.config();
 
 const env = process.env;
+console.log(env)
 
 export const PORT = Number(env.PORT!);
 
