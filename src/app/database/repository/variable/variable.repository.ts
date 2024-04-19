@@ -3,6 +3,7 @@ import {
   CreateVariableResult,
   GetVariableListObject,
   GetVariableListParams,
+  UpdateVariableParams,
   VariableRepositoryInterface,
 } from './variable.repository.interface';
 import {variableModal} from '../../modals';
@@ -43,6 +44,26 @@ class VariableRepository implements VariableRepositoryInterface {
         overrideUserId: {$in: [userId, undefined]},
       })
       .toArray();
+  }
+
+  async updateVariable({
+    variableId,
+    key,
+    value,
+  }: UpdateVariableParams): Promise<void> {
+    const updateData: {key?: string; value?: string} = {};
+
+    if (key) updateData.key = key;
+    if (value) updateData.value = value;
+
+    const response = await this.modal.updateOne(
+      {_id: variableId},
+      {$set: updateData}
+    );
+
+    if (!response.acknowledged || response.modifiedCount !== 1) {
+      throw new Error('Failed to update variable data');
+    }
   }
 }
 

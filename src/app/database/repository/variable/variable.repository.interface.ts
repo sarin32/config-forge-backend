@@ -19,10 +19,18 @@ export interface GetVariableListParams {
 }
 export type GetVariableListObject = WithId<VariableSchema>;
 
+export interface UpdateVariableParams {
+  variableId: ObjectId;
+  key?: string;
+  value?: string;
+}
+
 export interface VariableRepositoryInterface {
   createVariable(params: CreateVariableParams): Promise<CreateVariableResult>;
 
   getVariableList(
     params: GetVariableListParams
   ): Promise<GetVariableListObject[]>;
+
+  updateVariable(params: UpdateVariableParams): Promise<void>;
 }

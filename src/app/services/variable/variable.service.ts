@@ -4,6 +4,7 @@ import {
   CreateVariableParams,
   GetVariableListObject,
   GetVariableListParams,
+  UpdateVariableParams,
   VariableServiceInterface,
 } from './variable.service.interface';
 
@@ -34,6 +35,14 @@ class VariableService implements VariableServiceInterface {
     userId,
   }: GetVariableListParams): Promise<GetVariableListObject[]> {
     return await this.repository.getVariableList({environmentId, userId});
+  }
+
+  async updateVariable({
+    variableId,
+    key,
+    value,
+  }: UpdateVariableParams): Promise<void> {
+    await this.repository.updateVariable({variableId, key, value});
   }
 }
 
