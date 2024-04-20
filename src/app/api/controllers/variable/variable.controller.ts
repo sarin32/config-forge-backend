@@ -27,6 +27,12 @@ const updateVariableSchema = objectSchema({
   },
 });
 
+const deleteVariableSchema = objectSchema({
+  object: {
+    variableId: objectIdSchema(),
+  },
+});
+
 export async function createVariable(ctx: Context) {
   const {error, value} = validateObject<{
     environmentId: string;
@@ -65,5 +71,20 @@ export async function updateVariable(ctx: Context) {
     variableId: objectId(variableId),
     key,
     value: variableValue,
+  });
+}
+
+export async function deleteVariable(ctx: Context) {
+  const {error, value} = validateObject<{
+    variableId: string;
+  }>(deleteVariableSchema, ctx.request.body);
+
+  if (error) throw new BadRequestError(error.message);
+
+  const {userId} = ctx.state.user;
+  const {variableId} = value;
+
+  ctx.body = await variableService.deleteVariable({
+    variableId: objectId(variableId),
   });
 }

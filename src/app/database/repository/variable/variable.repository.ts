@@ -5,6 +5,7 @@ import {
   GetVariableListParams,
   UpdateVariableParams,
   VariableRepositoryInterface,
+  DeleteVariableParams,
 } from './variable.repository.interface';
 import {variableModal} from '../../modals';
 import {VariableSchema} from '../../modals/variable.modal.interface';
@@ -63,6 +64,13 @@ class VariableRepository implements VariableRepositoryInterface {
 
     if (!response.acknowledged || response.modifiedCount !== 1) {
       throw new Error('Failed to update variable data');
+    }
+  }
+
+  async deleteVariable({variableId}: DeleteVariableParams): Promise<void> {
+    const response = await this.modal.deleteOne({_id: variableId});
+    if (!response.acknowledged || response.deletedCount !== 1) {
+      throw new Error('Failed to delete variable data');
     }
   }
 }

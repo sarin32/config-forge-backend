@@ -25,6 +25,10 @@ export interface UpdateVariableParams {
   value?: string;
 }
 
+export interface DeleteVariableParams {
+  variableId: ObjectId;
+}
+
 export interface VariableRepositoryInterface {
   createVariable(params: CreateVariableParams): Promise<CreateVariableResult>;
 
@@ -33,4 +37,6 @@ export interface VariableRepositoryInterface {
   ): Promise<GetVariableListObject[]>;
 
   updateVariable(params: UpdateVariableParams): Promise<void>;
+
+  deleteVariable(params: DeleteVariableParams): Promise<void>;
 }
