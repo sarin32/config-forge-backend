@@ -1,4 +1,4 @@
-import {ObjectId, WithId} from 'mongodb';
+import { ObjectId, WithId } from 'mongodb';
 import {
   RolePermissions as RoleModalPermissions,
   RolesSchema,

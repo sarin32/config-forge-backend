@@ -1,4 +1,4 @@
-import {Context} from 'koa';
+import { Context } from 'koa';
 import {
   booleanSchema,
   objectIdSchema,
@@ -6,21 +6,21 @@ import {
   stringSchema,
   validateObject,
 } from '../../../utils/schema-validator';
-import {BadRequestError} from '../../../errors';
-import {variableService} from '../../../services/variable/variable.service';
-import {objectId} from '../../../utils/data-type-util';
+import { BadRequestError } from '../../../errors';
+import { variableService } from '../../../services/variable/variable.service';
+import { objectId } from '../../../utils/data-type-util';
 
 const createVariableSchema = objectSchema({
   object: {
     environmentId: objectIdSchema(),
-    key: stringSchema({min: 1}),
-    value: stringSchema({required: false}),
+    key: stringSchema({ min: 1 }),
+    value: stringSchema({ required: false }),
     isOverride: booleanSchema(false),
   },
 });
 
 export async function createVariable(ctx: Context) {
-  const {error, value} = validateObject<{
+  const { error, value } = validateObject<{
     environmentId: string;
     key: string;
     value: string;
@@ -29,8 +29,8 @@ export async function createVariable(ctx: Context) {
 
   if (error) throw new BadRequestError(error.message);
 
-  const {userId} = ctx.state.user;
-  const {environmentId, key, value: variableValue, isOverride} = value;
+  const { userId } = ctx.state.user;
+  const { environmentId, key, value: variableValue, isOverride } = value;
 
   ctx.body = await variableService.createVariable({
     userId,

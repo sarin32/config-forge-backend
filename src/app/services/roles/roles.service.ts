@@ -7,14 +7,14 @@ import {
   GetModulePermissionInfoResult,
   RoleServiceInterface,
 } from './roles.service.interface';
-import {roleRepository} from '../../database';
-import {RolePermissions} from '../../database/modals/roles.modal.interface';
+import { roleRepository } from '../../database';
+import { RolePermissions } from '../../database/modals/roles.modal.interface';
 
 class RolesService implements RoleServiceInterface {
   repository = roleRepository;
 
-  async getRoleInfo({roleId}: GetRoleInfoParams): Promise<GetRoleInfoResult> {
-    return await this.repository.getRoleInfo({roleId});
+  async getRoleInfo({ roleId }: GetRoleInfoParams): Promise<GetRoleInfoResult> {
+    return await this.repository.getRoleInfo({ roleId });
   }
 
   async getModuleRoleInfo<ModuleNameT extends keyof RolePermissions>({
@@ -23,7 +23,7 @@ class RolesService implements RoleServiceInterface {
   }: GetModulePermissionInfoParams<ModuleNameT>): Promise<
     GetModulePermissionInfoResult<ModuleNameT>
   > {
-    return await this.repository.getModuleRoleInfo({module, roleId});
+    return await this.repository.getModuleRoleInfo({ module, roleId });
   }
 }
 

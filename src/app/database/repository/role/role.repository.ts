@@ -6,13 +6,13 @@ import {
   ModuleName,
   RoleRepositoryInterface,
 } from './role.repository.interface';
-import {roleModal} from '../../modals';
+import { roleModal } from '../../modals';
 
 class RoleRepository implements RoleRepositoryInterface {
   modal = roleModal;
 
-  async getRoleInfo({roleId}: GetRoleInfoParams): Promise<GetRoleInfoResult> {
-    const role = await this.modal.findOne({_id: roleId});
+  async getRoleInfo({ roleId }: GetRoleInfoParams): Promise<GetRoleInfoResult> {
+    const role = await this.modal.findOne({ _id: roleId });
 
     if (!role) throw new Error('No role found with the given id');
 
@@ -30,7 +30,7 @@ class RoleRepository implements RoleRepositoryInterface {
     const projection: Record<string, number> = {};
     projection[moduleKey] = 1;
 
-    const role = await this.modal.findOne({_id: roleId}, {projection});
+    const role = await this.modal.findOne({ _id: roleId }, { projection });
 
     if (!role) throw new Error('No role found with the given id');
 

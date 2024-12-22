@@ -1,6 +1,6 @@
-import {ObjectId} from '@i/common.interface';
-import {tokenModal} from '../../modals';
-import {TokenSchema} from '../../modals/token.modal.interface';
+import { ObjectId } from '@i/common.interface';
+import { tokenModal } from '../../modals';
+import { TokenSchema } from '../../modals/token.modal.interface';
 import {
   CreateTokenParams,
   TokenRepositoryInterface,
@@ -33,13 +33,13 @@ class TokenRepository implements TokenRepositoryInterface {
       throw new Error('Failed to insert token data');
     }
 
-    return {projectId: response.insertedId};
+    return { projectId: response.insertedId };
   }
 
   async revokeToken(tokenId: ObjectId) {
     const response = await this.modal.updateOne(
-      {_id: tokenId},
-      {$set: {isActive: false}}
+      { _id: tokenId },
+      { $set: { isActive: false } }
     );
 
     if (!response.acknowledged || response.modifiedCount !== 1) {
@@ -52,9 +52,9 @@ class TokenRepository implements TokenRepositoryInterface {
       {
         token,
         isActive: true,
-        expiresOn: {$gt: new Date()},
+        expiresOn: { $gt: new Date() },
       },
-      {projection: {_id: 1}}
+      { projection: { _id: 1 } }
     );
 
     return tokenData ? true : false;

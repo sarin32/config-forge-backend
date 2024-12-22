@@ -1,4 +1,4 @@
-import {UserSchema} from './user.modal.interface';
+import { UserSchema } from './user.modal.interface';
 import {
   COLLECTION_EMAIL_VERIFICATIONS,
   COLLECTION_ENVIRONMENTS,
@@ -10,12 +10,12 @@ import {
 } from '../../config';
 import connection from '../connection';
 
-import {EmailVerificationSchema} from './email-verification.modal.interface';
-import {ProjectSchema} from './project.modal.interface';
-import {EnvironmentSchema} from './environment.modal.interface';
-import {TokenSchema} from './token.modal.interface';
-import {VariableSchema} from './variable.modal.interface';
-import {RolesSchema} from './roles.modal.interface';
+import { EmailVerificationSchema } from './email-verification.modal.interface';
+import { ProjectSchema } from './project.modal.interface';
+import { EnvironmentSchema } from './environment.modal.interface';
+import { TokenSchema } from './token.modal.interface';
+import { VariableSchema } from './variable.modal.interface';
+import { RolesSchema } from './roles.modal.interface';
 
 export const userModal = connection.getCollection<UserSchema>(COLLECTION_USERS);
 

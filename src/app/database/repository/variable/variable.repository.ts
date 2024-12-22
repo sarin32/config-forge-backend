@@ -5,8 +5,8 @@ import {
   GetVariableListParams,
   VariableRepositoryInterface,
 } from './variable.repository.interface';
-import {variableModal} from '../../modals';
-import {VariableSchema} from '../../modals/variable.modal.interface';
+import { variableModal } from '../../modals';
+import { VariableSchema } from '../../modals/variable.modal.interface';
 
 class VariableRepository implements VariableRepositoryInterface {
   private modal = variableModal;
@@ -30,7 +30,7 @@ class VariableRepository implements VariableRepositoryInterface {
       throw new Error('Failed to insert variable data');
     }
 
-    return {variableId: response.insertedId};
+    return { variableId: response.insertedId };
   }
 
   async getVariableList({
@@ -40,7 +40,7 @@ class VariableRepository implements VariableRepositoryInterface {
     return await this.modal
       .find({
         environmentId,
-        overrideUserId: {$in: [userId, undefined]},
+        overrideUserId: { $in: [userId, undefined] },
       })
       .toArray();
   }

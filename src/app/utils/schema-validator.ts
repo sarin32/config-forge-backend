@@ -4,14 +4,14 @@ export function validateObject<ValueType>(schema: Joi.Schema, data: unknown) {
   const {
     error,
     value,
-  }: {error: Joi.ValidationError | undefined; value: ValueType} =
+  }: { error: Joi.ValidationError | undefined; value: ValueType } =
     schema.validate(data, {
       abortEarly: true,
       allowUnknown: true,
-      errors: {escapeHtml: true},
+      errors: { escapeHtml: true },
     });
 
-  return {value, error};
+  return { value, error };
 }
 
 export function stringSchema({

@@ -1,4 +1,4 @@
-import {Document, ObjectId} from 'mongodb';
+import { Document, ObjectId } from 'mongodb';
 
 export interface UserSchema extends Document {
   name: string;
@@ -7,5 +7,5 @@ export interface UserSchema extends Document {
   password: string;
   salt: string;
   createdAt: Date;
-  isVerified: Boolean;
+  isVerified: boolean;
 }

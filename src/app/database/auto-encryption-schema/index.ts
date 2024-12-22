@@ -1,4 +1,4 @@
-import {NAMESPACE_VARIABLES} from '../../config';
+import { NAMESPACE_VARIABLES } from '../../config';
 import variablesAutoSchema from './variables.auto-schema';
 
 const autoEncrptionSchema: Record<string, unknown> = {};

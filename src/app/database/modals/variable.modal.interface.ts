@@ -1,4 +1,4 @@
-import {Document, ObjectId} from 'mongodb';
+import { Document, ObjectId } from 'mongodb';
 
 export interface VariableSchema extends Document {
   key: string;

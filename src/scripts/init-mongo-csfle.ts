@@ -1,4 +1,4 @@
-import {ClientEncryption, MongoClient} from 'mongodb';
+import { ClientEncryption, MongoClient } from 'mongodb';
 import * as crypto from 'crypto';
 
 export async function setupCSFLE(
@@ -23,10 +23,10 @@ export async function setupCSFLE(
   // creating keyvault collection and its index
   const keyVaultColl = keyVaultDB.collection(keyVaultCollection);
   await keyVaultColl.createIndex(
-    {keyAltNames: 1},
+    { keyAltNames: 1 },
     {
       unique: true,
-      partialFilterExpression: {keyAltNames: {$exists: true}},
+      partialFilterExpression: { keyAltNames: { $exists: true } },
     }
   );
 

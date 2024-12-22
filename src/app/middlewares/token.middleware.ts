@@ -1,7 +1,7 @@
-import {Context, Next} from 'koa';
-import {AuthorizationError, BadRequestError} from '../../errors';
-import {validateSignature} from '../../utils/token-util';
-import {objectId} from '../../utils/data-type-util';
+import { Context, Next } from 'koa';
+import { AuthorizationError, BadRequestError } from '../errors';
+import { validateSignature } from '../utils/token-util';
+import { objectId } from '../utils/data-type-util';
 
 interface JwtPayload {
   userId: string;
@@ -16,7 +16,8 @@ export async function tokenMiddleware(ctx: Context, next: Next) {
   const token = authToken.split(' ').at(1);
   if (!token) throw new BadRequestError('Authorization header is invalid');
 
-  const {invalidToken, payload, tokenExpired} = await validateSignature(token);
+  const { invalidToken, payload, tokenExpired } =
+    await validateSignature(token);
 
   if (tokenExpired) {
     throw new AuthorizationError('Authorization token expired');
@@ -27,7 +28,7 @@ export async function tokenMiddleware(ctx: Context, next: Next) {
   }
 
   // Assert payload type to JwtPayload
-  const {userId, roleId} = payload as JwtPayload;
+  const { userId, roleId } = payload as JwtPayload;
   if (!userId || !roleId) {
     throw new AuthorizationError(
       'User ID or Role ID not found in token payload'

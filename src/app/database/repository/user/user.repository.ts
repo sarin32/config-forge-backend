@@ -1,4 +1,4 @@
-import {userModal} from '../../modals';
+import { userModal } from '../../modals';
 import {
   CreateUserParams,
   FindUserByEmailParams,
@@ -10,7 +10,7 @@ import {
 class UserRepository implements UserRepositoryInterface {
   private readonly modal = userModal;
 
-  async createUser({email, name, password, salt, roleId}: CreateUserParams) {
+  async createUser({ email, name, password, salt, roleId }: CreateUserParams) {
     const result = await this.modal.insertOne({
       email,
       name,
@@ -30,7 +30,7 @@ class UserRepository implements UserRepositoryInterface {
     };
   }
 
-  async findUserByEmail({email}: FindUserByEmailParams) {
+  async findUserByEmail({ email }: FindUserByEmailParams) {
     const result = await this.modal.findOne({
       email,
     });
@@ -38,33 +38,33 @@ class UserRepository implements UserRepositoryInterface {
     return result;
   }
 
-  async isUserExistsWithEmail({email}: FindUserByEmailParams) {
+  async isUserExistsWithEmail({ email }: FindUserByEmailParams) {
     const result = await this.modal.findOne(
       {
         email,
         isVerified: true,
       },
-      {projection: {_id: 1}}
+      { projection: { _id: 1 } }
     );
 
     return Boolean(result);
   }
 
-  async findUserById({id}: FindUserByIdParams) {
+  async findUserById({ id }: FindUserByIdParams) {
     const result = await this.modal.findOne(
       {
         _id: id,
       },
-      {projection: {password: 0, salt: 0}}
+      { projection: { password: 0, salt: 0 } }
     );
 
     return result;
   }
 
-  async markUserAsVerified({userId, roleId}: MarkUserAsVerifiedParams) {
+  async markUserAsVerified({ userId, roleId }: MarkUserAsVerifiedParams) {
     const response = await this.modal.updateOne(
-      {_id: userId},
-      {$set: {roleId, isVerified: true}}
+      { _id: userId },
+      { $set: { roleId, isVerified: true } }
     );
 
     if (!response.acknowledged || response.modifiedCount !== 1) {

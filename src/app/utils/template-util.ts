@@ -1,4 +1,4 @@
-import {compile} from 'handlebars';
+import { compile } from 'handlebars';
 import * as fs from 'fs/promises';
 
 export async function generateTemplate(templateName: string, data: unknown) {

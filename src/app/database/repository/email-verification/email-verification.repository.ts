@@ -1,6 +1,6 @@
-import {Filter, UpdateFilter} from 'mongodb';
-import {emailVerificationModal} from '../../modals';
-import {EmailVerificationSchema} from '../../modals/email-verification.modal.interface';
+import { Filter, UpdateFilter } from 'mongodb';
+import { emailVerificationModal } from '../../modals';
+import { EmailVerificationSchema } from '../../modals/email-verification.modal.interface';
 import {
   CreateEmailVerificationParams,
   EmailVerificationRepositoryInterface,
@@ -34,8 +34,8 @@ class EmailVerificationRepository
     };
   }
 
-  async getEmailVerification({userId}: GetEmailVerificationParams) {
-    const query: Filter<EmailVerificationSchema> = {userId: userId};
+  async getEmailVerification({ userId }: GetEmailVerificationParams) {
+    const query: Filter<EmailVerificationSchema> = { userId: userId };
 
     return await this.modal.findOne(query);
   }
@@ -45,12 +45,12 @@ class EmailVerificationRepository
     incrementVerificationTry,
     otp,
   }: UpdateVerificationByIdParams) {
-    const query: Filter<EmailVerificationSchema> = {_id: id};
+    const query: Filter<EmailVerificationSchema> = { _id: id };
 
     const update: UpdateFilter<EmailVerificationSchema> = {};
 
     if (incrementVerificationTry) {
-      update.$inc = {verificationTry: 1};
+      update.$inc = { verificationTry: 1 };
     }
 
     const set: Record<string, unknown> = {};

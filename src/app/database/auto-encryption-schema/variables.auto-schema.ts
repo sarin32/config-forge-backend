@@ -1,4 +1,4 @@
-import {DATABASE_SETTINGS, DETERMINISTIC_ALGORITHM} from '../../config';
+import { DATABASE_SETTINGS, DETERMINISTIC_ALGORITHM } from '../../config';
 
 export default {
   bsonType: 'object',

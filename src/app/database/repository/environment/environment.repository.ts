@@ -1,4 +1,4 @@
-import {environmentModal} from '../../modals';
+import { environmentModal } from '../../modals';
 import {
   CreateEnvironmentParams,
   EnvironmentRepositoryInterface,
@@ -9,7 +9,11 @@ import {
 class EnvironmentRepository implements EnvironmentRepositoryInterface {
   private modal = environmentModal;
 
-  async createEnvironment({name, userId, projectId}: CreateEnvironmentParams) {
+  async createEnvironment({
+    name,
+    userId,
+    projectId,
+  }: CreateEnvironmentParams) {
     const response = await this.modal.insertOne({
       createdAt: new Date(),
       name,
@@ -19,13 +23,13 @@ class EnvironmentRepository implements EnvironmentRepositoryInterface {
     if (!response.acknowledged) {
       throw new Error('Failed to insert environment data');
     }
-    return {environmentId: response.insertedId};
+    return { environmentId: response.insertedId };
   }
 
   async getEnvironmentList({
     projectId,
   }: GetEnvironmentListParams): Promise<GetEnvironmentListResultObject[]> {
-    const environments = await this.modal.find({projectId}).toArray();
+    const environments = await this.modal.find({ projectId }).toArray();
     return environments;
   }
 }

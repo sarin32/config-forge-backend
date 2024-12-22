@@ -1,5 +1,5 @@
-import {ObjectId} from '@i/common.interface';
-import {GetVariableListObject as GetVariableListRepoObject} from '../../database/repository/variable/variable.repository.interface';
+import { ObjectId } from '@i/common.interface';
+import { GetVariableListObject as GetVariableListRepoObject } from '../../database/repository/variable/variable.repository.interface';
 
 export interface CreateVariableParams {
   environmentId: ObjectId;

@@ -1,4 +1,4 @@
-import {projectRepository} from '../../database';
+import { projectRepository } from '../../database';
 import {
   CreateProjectParams,
   GetProjectParams,
@@ -10,15 +10,17 @@ import {
   GetProjectDataInDetailParams,
   GetProjectDataInDetailResult,
 } from './project.service.interface';
-import {rolesService} from '../roles/roles.service';
-import {ProjectAccessLevel} from '../../config';
-import {environmentService} from '../environment/environment.service';
-import {variableService} from '../variable/variable.service';
+import { rolesService } from '../roles/roles.service';
+import { ProjectAccessLevel } from '../../config';
+import { environmentService } from '../environment/environment.service';
+import { variableService } from '../variable/variable.service';
 
 class ProjectService implements ProjectServiceInterface {
   private readonly repository = projectRepository;
 
-  async hasAccessToCreateProject({roleId}: HasAccessParams): Promise<boolean> {
+  async hasAccessToCreateProject({
+    roleId,
+  }: HasAccessParams): Promise<boolean> {
     const respose = await rolesService.getModuleRoleInfo({
       roleId,
       module: 'projects',
@@ -26,7 +28,7 @@ class ProjectService implements ProjectServiceInterface {
     return respose?.write || false;
   }
 
-  async hasAccessToReadProject({roleId}: HasAccessParams): Promise<boolean> {
+  async hasAccessToReadProject({ roleId }: HasAccessParams): Promise<boolean> {
     const respose = await rolesService.getModuleRoleInfo({
       roleId,
       module: 'projects',
@@ -68,12 +70,12 @@ class ProjectService implements ProjectServiceInterface {
     ].includes(access);
   }
 
-  async createProject({name, userId}: CreateProjectParams) {
-    const {projectId} = await this.repository.createProject({
+  async createProject({ name, userId }: CreateProjectParams) {
+    const { projectId } = await this.repository.createProject({
       name,
       userId,
     });
-    return {projectId};
+    return { projectId };
   }
 
   // addProjectUser({}: AddProjectUserParams): Promise<void> {
@@ -83,18 +85,18 @@ class ProjectService implements ProjectServiceInterface {
   async getProjectList({
     userId,
   }: GetProjectParams): Promise<GetProjectListResult> {
-    return await this.repository.getProjectList({userId});
+    return await this.repository.getProjectList({ userId });
   }
 
-  async updateProject({name, projectId}: UpdateProjectParams): Promise<void> {
-    await this.repository.updateProject({name, projectId});
+  async updateProject({ name, projectId }: UpdateProjectParams): Promise<void> {
+    await this.repository.updateProject({ name, projectId });
   }
 
   async getProjectDataInDetail({
     projectId,
     userId,
   }: GetProjectDataInDetailParams): Promise<GetProjectDataInDetailResult> {
-    const project = await this.repository.getProject({projectId});
+    const project = await this.repository.getProject({ projectId });
 
     const result: GetProjectDataInDetailResult = {
       createdAt: project.createdAt,
