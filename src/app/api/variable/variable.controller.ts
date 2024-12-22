@@ -5,10 +5,10 @@ import {
   objectSchema,
   stringSchema,
   validateObject,
-} from '../../../utils/schema-validator';
-import { BadRequestError } from '../../../errors';
-import { variableService } from '../../../services/variable/variable.service';
-import { objectId } from '../../../utils/data-type-util';
+} from '../../utils/schema-validator';
+import { BadRequestError } from '../../errors';
+import { variableService } from '../../services/variable/variable.service';
+import { objectId } from '../../utils/data-type-util';
 
 const createVariableSchema = objectSchema({
   object: {
@@ -22,8 +22,8 @@ const createVariableSchema = objectSchema({
 const updateVariableSchema = objectSchema({
   object: {
     variableId: objectIdSchema(),
-    key: stringSchema({min: 1, required: false}),
-    value: stringSchema({required: false}),
+    key: stringSchema({ min: 1, required: false }),
+    value: stringSchema({ required: false }),
   },
 });
 
@@ -56,7 +56,7 @@ export async function createVariable(ctx: Context) {
 }
 
 export async function updateVariable(ctx: Context) {
-  const {error, value} = validateObject<{
+  const { error, value } = validateObject<{
     variableId: string;
     key: string;
     value: string;
@@ -64,8 +64,8 @@ export async function updateVariable(ctx: Context) {
 
   if (error) throw new BadRequestError(error.message);
 
-  const {userId} = ctx.state.user;
-  const {variableId, key, value: variableValue} = value;
+  // const { userId } = ctx.state.user;
+  const { variableId, key, value: variableValue } = value;
 
   ctx.body = await variableService.updateVariable({
     variableId: objectId(variableId),
@@ -75,14 +75,14 @@ export async function updateVariable(ctx: Context) {
 }
 
 export async function deleteVariable(ctx: Context) {
-  const {error, value} = validateObject<{
+  const { error, value } = validateObject<{
     variableId: string;
   }>(deleteVariableSchema, ctx.request.body);
 
   if (error) throw new BadRequestError(error.message);
 
-  const {userId} = ctx.state.user;
-  const {variableId} = value;
+  // const { userId } = ctx.state.user;
+  const { variableId } = value;
 
   ctx.body = await variableService.deleteVariable({
     variableId: objectId(variableId),

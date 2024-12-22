@@ -1,40 +1,36 @@
-import * as Koa from 'koa';
-import {bodyParser} from '@koa/bodyparser';
+import { bodyParser } from '@koa/bodyparser';
 import * as cors from '@koa/cors';
-import {PORT} from '../config/config';
-import {errorMiddleware, router} from '../api';
-import {connection} from '../database';
+import { PORT } from '../config/config';
+import { errorMiddleware } from '../middlewares';
+import { connection } from '../database';
 import * as logger from 'koa-logger';
+import { Server } from '@webexdx/koa-wrap';
+import router from '../api';
 
-export class Server {
-  app: Koa<Koa.DefaultState, Koa.DefaultContext>;
+const loggerMiddleware = logger();
+const corsMiddleware = cors({
+  allowMethods: ['GET', 'POST'],
+});
+const bodyparserMiddleware = bodyParser();
 
-  constructor() {
-    this.app = new Koa();
-
-    this.app.use(logger());
-
-    // cors middleware
-    this.app.use(
-      cors({
-        allowMethods: ['GET', 'POST'],
-      })
-    );
-
-    // bodyparser middleware
-    this.app.use(bodyParser());
-
-    this.app.use(errorMiddleware);
-    // attach router
-    this.app.use(router.routes());
-  }
-
-  public async listen() {
+const server = new Server({
+  port: PORT,
+  routes: router,
+  middlewares: [
+    loggerMiddleware,
+    corsMiddleware,
+    bodyparserMiddleware,
+    errorMiddleware,
+  ],
+  onStartCb: () => {
+    console.log('APP IS RUNNING ON PORT ', PORT);
+  },
+  preStartCb: async () => {
     await connection.startConnecion();
     console.log('ESTABLISHED DATABASE CONNECTION');
+  },
+});
 
-    this.app.listen(PORT, () => {
-      console.log('APP IS RUNNING ON PORT ', PORT);
-    });
-  }
+export async function startServer() {
+  await server.start();
 }

@@ -1,5 +1,5 @@
-import {ObjectId} from '@i/common.interface';
-import {GetEnvironmentListResultObject as GetEnvironmentListResultRepoObject} from '../../database/repository/environment/environment.repository.interface';
+import { ObjectId } from '@i/common.interface';
+import { GetEnvironmentListResultObject as GetEnvironmentListResultRepoObject } from '../../database/repository/environment/environment.repository.interface';
 
 export interface HasAccessParams {
   roleId: ObjectId;

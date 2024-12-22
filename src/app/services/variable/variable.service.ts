@@ -1,6 +1,6 @@
-import {variableRepository} from '../../database';
-import {CreateVariableParams as CreateVariableRepoParams} from '../../database/repository/variable/variable.repository.interface';
-import {rolesService} from '../roles/roles.service';
+import { variableRepository } from '../../database';
+import { CreateVariableParams as CreateVariableRepoParams } from '../../database/repository/variable/variable.repository.interface';
+import { rolesService } from '../roles/roles.service';
 import {
   CreateVariableParams,
   DeleteVariableParams,
@@ -14,9 +14,11 @@ import {
 class VariableService implements VariableServiceInterface {
   private readonly repository = variableRepository;
 
-  async hasWriteAccessToVariables({roleId}: HasAccessParams): Promise<boolean> {
+  async hasWriteAccessToVariables({
+    roleId,
+  }: HasAccessParams): Promise<boolean> {
     return (
-      (await rolesService.getModuleRoleInfo({roleId, module: 'variables'}))
+      (await rolesService.getModuleRoleInfo({ roleId, module: 'variables' }))
         ?.write || false
     );
   }
@@ -25,7 +27,7 @@ class VariableService implements VariableServiceInterface {
     roleId,
   }: HasAccessParams): Promise<boolean> {
     return (
-      (await rolesService.getModuleRoleInfo({roleId, module: 'variables'}))
+      (await rolesService.getModuleRoleInfo({ roleId, module: 'variables' }))
         ?.delete || false
     );
   }
@@ -46,14 +48,14 @@ class VariableService implements VariableServiceInterface {
     if (isOverride) variableObject.overrideUserId = userId;
 
     const response = await this.repository.createVariable(variableObject);
-    return {variableId: response.variableId};
+    return { variableId: response.variableId };
   }
 
   async getVariableList({
     environmentId,
     userId,
   }: GetVariableListParams): Promise<GetVariableListObject[]> {
-    return await this.repository.getVariableList({environmentId, userId});
+    return await this.repository.getVariableList({ environmentId, userId });
   }
 
   async updateVariable({
@@ -61,11 +63,11 @@ class VariableService implements VariableServiceInterface {
     key,
     value,
   }: UpdateVariableParams): Promise<void> {
-    await this.repository.updateVariable({variableId, key, value});
+    await this.repository.updateVariable({ variableId, key, value });
   }
 
-  async deleteVariable({variableId}: DeleteVariableParams): Promise<void> {
-    await this.repository.deleteVariable({variableId});
+  async deleteVariable({ variableId }: DeleteVariableParams): Promise<void> {
+    await this.repository.deleteVariable({ variableId });
   }
 }
 

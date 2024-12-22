@@ -1,4 +1,4 @@
-import {environmentRepository} from '../../database';
+import { environmentRepository } from '../../database';
 import {
   CreateEnvironmentParams,
   CreateEnvironmentResult,
@@ -7,7 +7,7 @@ import {
   HasAccessParams,
   GetEnvironmentListResultObject,
 } from './environment.service.interface';
-import {rolesService} from '../roles/roles.service';
+import { rolesService } from '../roles/roles.service';
 
 class EnvironmentService implements EnvironmentServiceInterface {
   private repository = environmentRepository;
@@ -16,7 +16,7 @@ class EnvironmentService implements EnvironmentServiceInterface {
     roleId,
   }: HasAccessParams): Promise<boolean> {
     return (
-      (await rolesService.getModuleRoleInfo({module: 'variables', roleId}))
+      (await rolesService.getModuleRoleInfo({ module: 'variables', roleId }))
         ?.write || false
     );
   }
@@ -26,19 +26,19 @@ class EnvironmentService implements EnvironmentServiceInterface {
     projectId,
     userId,
   }: CreateEnvironmentParams): Promise<CreateEnvironmentResult> {
-    const {environmentId} = await this.repository.createEnvironment({
+    const { environmentId } = await this.repository.createEnvironment({
       name,
       projectId,
       userId,
     });
 
-    return {environmentId};
+    return { environmentId };
   }
 
   async getEnvironmentList({
     projectId,
   }: GetEnvironmentListParams): Promise<GetEnvironmentListResultObject[]> {
-    return await this.repository.getEnvironmentList({projectId});
+    return await this.repository.getEnvironmentList({ projectId });
   }
 }
 

@@ -1,4 +1,4 @@
-import {ObjectId} from '@i/common.interface';
+import { ObjectId } from '@i/common.interface';
 import {
   GetRoleInfoParams as GetRoleInfoRepositoryParams,
   GetRoleInfoResult as GetRoleInfoRepositoryResult,

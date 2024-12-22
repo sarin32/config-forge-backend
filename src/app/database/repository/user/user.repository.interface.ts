@@ -1,5 +1,5 @@
-import {ObjectId, WithId} from 'mongodb';
-import {UserSchema} from '../../modals/user.modal.interface';
+import { ObjectId, WithId } from 'mongodb';
+import { UserSchema } from '../../modals/user.modal.interface';
 
 export type CreateUserParams = {
   email: string;
@@ -23,7 +23,7 @@ export interface MarkUserAsVerifiedParams {
 }
 
 export interface UserRepositoryInterface {
-  createUser(params: CreateUserParams): Promise<{id: ObjectId}>;
+  createUser(params: CreateUserParams): Promise<{ id: ObjectId }>;
 
   findUserByEmail(
     params: FindUserByEmailParams

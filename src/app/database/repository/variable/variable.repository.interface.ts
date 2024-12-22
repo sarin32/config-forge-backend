@@ -1,6 +1,6 @@
-import {ObjectId} from '@i/common.interface';
-import {VariableSchema} from '../../modals/variable.modal.interface';
-import {WithId} from 'mongodb';
+import { ObjectId } from '@i/common.interface';
+import { VariableSchema } from '../../modals/variable.modal.interface';
+import { WithId } from 'mongodb';
 
 export interface CreateVariableParams {
   overrideUserId?: ObjectId;

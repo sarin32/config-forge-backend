@@ -3,14 +3,18 @@ import {
   VERIFICATION_MAX_TRIES,
   VERIFIED_USER_ROLE_ID,
 } from '../../config';
-import {emailVerificationRepository} from '../../database';
-import {AuthorizationError, ConflictError, ForbiddenError} from '../../errors';
+import { emailVerificationRepository } from '../../database';
+import {
+  AuthorizationError,
+  ConflictError,
+  ForbiddenError,
+} from '../../errors';
 import emailUtil from '../../utils/email-util';
-import {generateRandomString} from '../../utils/string-util';
-import {generateTemplate} from '../../utils/template-util';
-import {userService} from '../user/user.service';
-import {objectId} from '../../utils/data-type-util';
-import {userAuthService} from '../user-auth/user-auth.service';
+import { generateRandomString } from '../../utils/string-util';
+import { generateTemplate } from '../../utils/template-util';
+import { userService } from '../user/user.service';
+import { objectId } from '../../utils/data-type-util';
+import { userAuthService } from '../user-auth/user-auth.service';
 import {
   EmailVerificationServiceInterface,
   HasAccessParams,
@@ -19,7 +23,7 @@ import {
   VerifyEmailVerificationOTPParams,
   VerifyEmailVerificationOTPResult,
 } from './email-verification.service.interface';
-import {rolesService} from '../roles/roles.service';
+import { rolesService } from '../roles/roles.service';
 
 class EmailVerificationService implements EmailVerificationServiceInterface {
   private readonly repository = emailVerificationRepository;
@@ -47,7 +51,7 @@ class EmailVerificationService implements EmailVerificationServiceInterface {
   public async sendEmailForVerification({
     userId,
   }: SendEmailForVerificationParams): Promise<void> {
-    const user = await userService.getUserInfo({userId});
+    const user = await userService.getUserInfo({ userId });
 
     const existingVerification = await this.repository.getEmailVerification({
       userId: user._id,
@@ -79,7 +83,7 @@ class EmailVerificationService implements EmailVerificationServiceInterface {
         otp: existingVerification.otp,
       });
     } else {
-      const otp = generateRandomString(6, {includeNumbers: true});
+      const otp = generateRandomString(6, { includeNumbers: true });
 
       await this.repository.createEmailVerification({
         email: user.email,
@@ -109,7 +113,7 @@ class EmailVerificationService implements EmailVerificationServiceInterface {
 
     const roleId = objectId(VERIFIED_USER_ROLE_ID);
 
-    await userService.markUserAsVerified({userId});
+    await userService.markUserAsVerified({ userId });
 
     return {
       userId: userId,
@@ -124,7 +128,7 @@ class EmailVerificationService implements EmailVerificationServiceInterface {
     otp,
     emailId,
   }: SendEmailVerificationEmailParams): Promise<void> {
-    const body = await generateTemplate('email-verification', {otp});
+    const body = await generateTemplate('email-verification', { otp });
     await emailUtil.sendEmail({
       to: emailId,
       subject: 'OTP for your email verification',

@@ -1,6 +1,6 @@
-import {Context, Next} from 'koa';
-import {BaseError} from '../../errors';
-import HttpStatusCode from '../../config/http-codes';
+import { Context, Next } from 'koa';
+import { BaseError } from '../errors';
+import HttpStatusCode from '../config/http-codes';
 
 export async function errorMiddleware(ctx: Context, next: Next) {
   try {
