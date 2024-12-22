@@ -1,14 +1,36 @@
 import { variableRepository } from '../../database';
 import { CreateVariableParams as CreateVariableRepoParams } from '../../database/repository/variable/variable.repository.interface';
+import { rolesService } from '../roles/roles.service';
 import {
   CreateVariableParams,
+  DeleteVariableParams,
   GetVariableListObject,
   GetVariableListParams,
+  HasAccessParams,
+  UpdateVariableParams,
   VariableServiceInterface,
 } from './variable.service.interface';
 
 class VariableService implements VariableServiceInterface {
   private readonly repository = variableRepository;
+
+  async hasWriteAccessToVariables({
+    roleId,
+  }: HasAccessParams): Promise<boolean> {
+    return (
+      (await rolesService.getModuleRoleInfo({ roleId, module: 'variables' }))
+        ?.write || false
+    );
+  }
+
+  async hasDeleteAccessToVariables({
+    roleId,
+  }: HasAccessParams): Promise<boolean> {
+    return (
+      (await rolesService.getModuleRoleInfo({ roleId, module: 'variables' }))
+        ?.delete || false
+    );
+  }
 
   async createVariable({
     environmentId,
@@ -34,6 +56,18 @@ class VariableService implements VariableServiceInterface {
     userId,
   }: GetVariableListParams): Promise<GetVariableListObject[]> {
     return await this.repository.getVariableList({ environmentId, userId });
+  }
+
+  async updateVariable({
+    variableId,
+    key,
+    value,
+  }: UpdateVariableParams): Promise<void> {
+    await this.repository.updateVariable({ variableId, key, value });
+  }
+
+  async deleteVariable({ variableId }: DeleteVariableParams): Promise<void> {
+    await this.repository.deleteVariable({ variableId });
   }
 }
 

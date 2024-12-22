@@ -1,37 +1,46 @@
 # Stage 1: Builder
-FROM node:20-alpine AS builder
+FROM ubuntu:20.04 AS builder
 
 WORKDIR /app
 
-# Copy the entire content of the local directory into the Docker image
-COPY . .
+# Mongodb Enterprise version installation
+RUN apt-get update && \
+  apt-get install gnupg curl -y && \
+  curl -fsSL https://pgp.mongodb.com/server-7.0.asc | gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor && \
+  echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] http://repo.mongodb.com/apt/ubuntu focal/mongodb-enterprise/7.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-enterprise-7.0.list && \
+  apt-get update && \
+  apt-get install -y mongodb-enterprise
+
+# Install Node.js
+RUN apt-get install -y curl && \
+  curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+  apt-get install -y nodejs
+
+
+# Copy package.json and package-lock.json
+COPY package*.json /app/
 
 # Install dependencies and build the application
 RUN npm install
+
+# copy rest of the files
+COPY . .
+
+# build 
 RUN npm run build:prod
 
-# Stage 2: Final
-FROM node:20-alpine AS final
+# copy the build and delete the folder where code resides
+RUN cp -r ./build ../app-final && rm -r /app
 
-WORKDIR /app
+# set working directory  where the new build resides 
+WORKDIR /app-final
 
-# Copy the built files from the 'builder' stage
-COPY --from=builder /app/build .
-
-# copy assets
+# copy assets and package.json files
 COPY src/assets ./src/assets
+COPY package*.json ./
 
-# Copy package.json and package-lock.json for production
-COPY package.json .
-COPY package-lock.json .
-
-# Install only production dependencies
+# install only prod dependencies
 RUN npm install --only=production
-
-# install infiisical
-RUN apk add --no-cache bash curl && curl -1sLf \
-'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.alpine.sh' | bash \
-&& apk add infisical
 
 # Set the default port as an environment variable
 ENV PORT=3000
